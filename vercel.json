@@ -7,6 +7,7 @@
     { "src": "src/frontend/scripts/*.js", "use": "@vercel/static" },
     { "src": "src/reports/*.js", "use": "@vercel/static" },
     { "src": "public/**/*", "use": "@vercel/static" },
+    { "src": "data/*.json", "use": "@vercel/static" },
     { "src": "api/report/*.js", "use": "@vercel/node", "config": { "maxDuration": 60 } }
   ],
   "routes": [
@@ -19,6 +20,7 @@
     { "src": "^/favicon\\.ico$", "dest": "/public/favicon.ico" },
     { "src": "^/documents/(.*)$", "dest": "/public/documents/$1" },
     { "src": "^/api/report/(pdf|levantamento|quadro)$", "dest": "/api/report/$1" },
+    { "src": "^/data/(.*)$", "dest": "/data/$1" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
