@@ -1,0 +1,8 @@
+node_modules/
+.npm-cache/
+*.log
+.DS_Store
+
+# Resultados gerados pela suíte de testes (local_dev/tests)
+# Os arquivos-fonte da suíte (local_dev/tests/, local_dev/server.js) são versionados.
+local_dev/test-results/
