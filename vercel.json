@@ -1,9 +1,24 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/src/frontend/pages/index.html" },
-    { "source": "/landing", "destination": "/src/frontend/pages/index.html" },
-    { "source": "/calculadora", "destination": "/src/frontend/pages/calculadora.html" },
-    { "source": "/levantamento", "destination": "/src/frontend/pages/levantamento.html" },
-    { "source": "/quadro", "destination": "/src/frontend/pages/quadro.html" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "builds": [
+    { "src": "src/frontend/pages/*.html", "use": "@vercel/static" },
+    { "src": "src/frontend/styles/*.css", "use": "@vercel/static" },
+    { "src": "src/frontend/scripts/*.js", "use": "@vercel/static" },
+    { "src": "src/reports/*.js", "use": "@vercel/static" },
+    { "src": "public/**/*", "use": "@vercel/static" },
+    { "src": "api/report/*.js", "use": "@vercel/node", "config": { "maxDuration": 60 } }
+  ],
+  "routes": [
+    { "src": "^/$", "dest": "/src/frontend/pages/index.html" },
+    { "src": "^/landing/?$", "dest": "/src/frontend/pages/index.html" },
+    { "src": "^/calculadora/?$", "dest": "/src/frontend/pages/calculadora.html" },
+    { "src": "^/levantamento/?$", "dest": "/src/frontend/pages/levantamento.html" },
+    { "src": "^/quadro/?$", "dest": "/src/frontend/pages/quadro.html" },
+    { "src": "^/favicon\\.svg$", "dest": "/public/favicon.svg" },
+    { "src": "^/favicon\\.ico$", "dest": "/public/favicon.ico" },
+    { "src": "^/documents/(.*)$", "dest": "/public/documents/$1" },
+    { "src": "^/api/report/(pdf|levantamento|quadro)$", "dest": "/api/report/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
