@@ -1,0 +1,8 @@
+# Desenvolvimento local — NÃO vai para produção (Vercel não executa nada daqui).
+local_dev/
+
+# Ferramentas de assistente de desenvolvimento (não fazem parte do runtime).
+.agents/
+
+# O Vercel já exclui node_modules automaticamente; listado aqui por clareza.
+node_modules/
