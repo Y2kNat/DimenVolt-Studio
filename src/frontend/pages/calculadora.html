@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>DimenVolt Studio · Calculadora NBR 5410</title>
+  <meta name="description" content="DimenVolt Studio: dimensionamento de cabos e disjuntores conforme NBR 5410, com análise de queda de tensão e fatores de correção.">
+  <meta name="keywords" content="DimenVolt Studio, calculadora cabos, disjuntores, NBR 5410, dimensionamento elétrico, cabos elétricos, engenharia elétrica">
+  <meta name="author" content="DimenVolt Studio">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <meta property="og:title" content="DimenVolt Studio | Calculadora NBR 5410">
+  <meta property="og:description" content="Workbench de dimensionamento de condutores e dispositivos de proteção conforme NBR 5410. Cálculo rápido e seguro.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/frontend/styles/tokens.css">
+  <link rel="stylesheet" href="/src/frontend/styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 1s ease-out, opacity 0.6s ease-out;
+      overflow: hidden;
+    }
+    #loading-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .welcome-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: 200;
+      font-size: 2rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0;
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+      font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+      text-align: center;
+      width: 100%;
+      padding: 0 1rem;
+    }
+    #main-wrapper {
+      filter: blur(0px);
+      transition: filter 1s ease-out;
+    }
+    #main-wrapper.blur-in {
+      filter: blur(20px);
+    }
+    body {
+      overflow: hidden;
+    }
+    body.loaded {
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particle-bg-canvas"></canvas>
+
+  <div id="loading-overlay">
+    <canvas id="loading-canvas"></canvas>
+    <div class="welcome-text" id="loading-text">LOADING</div>
+  </div>
+
+  <div id="main-wrapper" class="app-shell">
+    <aside class="app-rail" aria-label="Navegação">
+      <a href="/" class="rail-brand" title="DimenVolt Studio — Início">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="rail-brand-text">DV</span>
+      </a>
+      <nav class="rail-nav">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#hero" class="active" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
+          <li><a href="#calculator" title="Calculadora"><i class="fas fa-sliders-h"></i><span>Calculadora</span></a></li>
+          <li><a href="/levantamento" title="Levantamento"><i class="fas fa-clipboard-list"></i><span>Levantamento</span></a></li>
+          <li><a href="#cable-table" title="Tabela Cabos"><i class="fas fa-table"></i><span>Cabos</span></a></li>
+          <li><a href="#breaker-table" title="Tabela Disjuntores"><i class="fas fa-bolt"></i><span>Disjuntores</span></a></li>
+          <li><a href="#about" title="Sobre"><i class="fas fa-info-circle"></i><span>Sobre</span></a></li>
+        </ul>
+      </nav>
+      <div class="rail-meta">NBR<br>5410</div>
+    </aside>
+
+    <div class="app-stage">
+      <header class="app-topbar" id="navbar">
+        <div class="topbar-left">
+          <a href="/" class="logo"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span> DimenVolt Studio</a>
+          <span class="topbar-sep" aria-hidden="true"></span>
+          <span class="topbar-mode">Workbench · Dimensionamento</span>
+        </div>
+        <div class="topbar-right">
+          <a class="topbar-chip" href="/levantamento">Levantamento <b>↗</b></a>
+          <span class="topbar-chip">NBR 5410</span>
+          <a class="topbar-chip" href="/">Plataforma</a>
+          <div class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <section id="hero" class="intro-strip">
+          <div class="intro-copy">
+            <p class="eyebrow">Motor de cálculo · NBR 5410</p>
+            <h1>Dimensionamento Elétrico <em>Inteligente</em></h1>
+            <p class="lede">Calcule cabos, disjuntores e parâmetros elétricos com precisão. Ambiente de trabalho para profissionais.</p>
+            <p class="subtitle">Conforme NBR 5410 · Cálculo inteligente com fatores de correção</p>
+            <a href="#calculator" class="btn-primary">Abrir calculadora <b>→</b></a>
+          </div>
+          <div class="intro-specs" aria-label="Capacidades">
+            <div class="spec-pill">
+              <span>01</span>
+              <div>
+                <strong>1.5 – 35 mm²</strong>
+                <small>Cobre e alumínio</small>
+              </div>
+            </div>
+            <div class="spec-pill">
+              <span>02</span>
+              <div>
+                <strong>6A – 100A</strong>
+                <small>Disjuntores curva C</small>
+              </div>
+            </div>
+            <div class="spec-pill">
+              <span>03</span>
+              <div>
+                <strong>Correção térmica</strong>
+                <small>Temperatura e agrupamento</small>
+              </div>
+            </div>
+          </div>
+          <div class="stats-section">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="fas fa-ruler-combined"></i>
+                <h3>Seções 1.5 a 35 mm²</h3>
+                <p>Cobre e Alumínio</p>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Disjuntores 6A–100A</h3>
+                <p>Curva C padrão</p>
+              </div>
+              <div class="stat-card">
+                <i class="fas fa-temperature-high"></i>
+                <h3>Correção Térmica</h3>
+                <p>Agrupamento e temperatura</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="calculator" class="workbench">
+          <div class="workbench-head">
+            <div>
+              <p class="eyebrow">Workbench</p>
+              <h2>Calculadora de Cabo & Disjuntor</h2>
+            </div>
+            <p class="workbench-note">Preencha os parâmetros do circuito. O parecer técnico aparece ao lado.</p>
+          </div>
+
+          <div class="workbench-grid">
+            <div class="inspector calculator-card">
+              <div class="pane-label">
+                <span>Entrada</span>
+                <span>Parâmetros do circuito</span>
+              </div>
+
+              <form id="calc-form" class="calc-form" novalidate>
+                <fieldset class="field-set">
+                  <legend><i>01</i> Carga</legend>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="voltage">Tensão (V)</label>
+                      <input type="text" id="voltage" value="220" min="1" step="any" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="power">Potência (W)</label>
+                      <input type="text" id="power" placeholder="Ex: 4500" min="1" step="any" required>
+                      <span class="form-error" id="power-error">Informe a potência do equipamento.</span>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="length">Comprimento do cabo (m)</label>
+                      <input type="text" id="length" placeholder="Ex: 35" min="0.1" step="any" required>
+                      <span class="form-error" id="length-error">Informe o comprimento do cabo.</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="connectionType">Tipo de Ligação</label>
+                      <select id="connectionType">
+                        <option value="phase-neutral" selected>Fase-Neutro (FN)</option>
+                        <option value="phase-phase">Fase-Fase (FF)</option>
+                        <option value="three-phase">Trifásico (3F)</option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="field-set">
+                  <legend><i>02</i> Instalação</legend>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="circuitType">Tipo de Circuito</label>
+                      <select id="circuitType">
+                        <option value="lighting">Iluminação</option>
+                        <option value="tug" selected>Tomadas de Uso Geral (TUG)</option>
+                        <option value="tue">Tomadas de Uso Específico (TUE)</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="installMethod">Método de Instalação</label>
+                      <select id="installMethod">
+                        <option value="B1">B1 - Eletroduto embutido</option>
+                        <option value="B2">B2 - Eletroduto aparente</option>
+                        <option value="C">C - Cabo ao ar livre</option>
+                        <option value="D">D - Eletroduto enterrado</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="safetyMargin">Margem de Segurança</label>
+                      <select id="safetyMargin">
+                        <option value="minimum">Mínima (NBR 5410)</option>
+                        <option value="recommended" selected>Recomendada (+20%)</option>
+                        <option value="high">Alta (expansão futura)</option>
+                      </select>
+                    </div>
+                    <div class="form-group form-group-empty" aria-hidden="true"></div>
+                  </div>
+                </fieldset>
+
+                <div class="advanced-toggle" id="advanced-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="advanced-section">
+                  <i class="fas fa-chevron-down"></i>
+                  <span>Opções Avançadas</span>
+                  <em>Material · Ambiente · FP</em>
+                </div>
+
+                <div class="advanced-section" id="advanced-section">
+                  <fieldset class="field-set">
+                    <legend><i>03</i> Correções</legend>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="material">Material do Condutor</label>
+                        <select id="material">
+                          <option value="copper" selected>Cobre</option>
+                          <option value="aluminum">Alumínio</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="ambientCondition">Condição Ambiente</label>
+                        <select id="ambientCondition">
+                          <option value="normal" selected>Ambiente normal (30°C)</option>
+                          <option value="hot">Ambiente quente (40°C)</option>
+                          <option value="veryHot">Ambiente muito quente (50°C)</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="groupedCircuits">Circuitos Agrupados</label>
+                        <input type="text" id="groupedCircuits" value="1" min="1" max="20" step="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="loadedConductors">Condutores Carregados</label>
+                        <select id="loadedConductors">
+                          <option value="2" selected>2 condutores</option>
+                          <option value="3">3 condutores</option>
+                          <option value="4">4 condutores</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="maxDrop">Queda de Tensão Máx. (%)</label>
+                        <input type="text" id="maxDrop" value="4" min="0.5" max="15" step="0.1">
+                      </div>
+                      <div class="form-group">
+                        <label for="powerFactorSelect">Fator de Potência (FP)</label>
+                        <select id="powerFactorSelect">
+                          <option value="1.00" selected>Resistiva → FP = 1.00</option>
+                          <option value="0.95">Eletrônica → FP = 0.95</option>
+                          <option value="0.92">Motor → FP = 0.92</option>
+                        </select>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <button type="submit" class="btn-calculate">Calcular dimensionamento <b>→</b></button>
+              </form>
+            </div>
+
+            <aside class="readout">
+              <div class="pane-label">
+                <span>Saída</span>
+                <span>Parecer técnico</span>
+              </div>
+
+              <div class="readout-idle">
+                <div class="readout-idle-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+                <p>Aguardando parâmetros</p>
+                <span>Os valores de cabo, disjuntor e queda de tensão aparecem aqui após o cálculo.</span>
+              </div>
+
+              <div id="result-container" class="result-container" style="display: none;">
+                <div class="result-hero-pair">
+                  <article class="result-card meter-main">
+                    <span class="result-label">Cabo Recomendado</span>
+                    <span class="result-value" id="res-cable">--</span>
+                  </article>
+                  <article class="result-card meter-main">
+                    <span class="result-label">Disjuntor Recomendado</span>
+                    <span class="result-value" id="res-breaker">--</span>
+                  </article>
+                </div>
+
+                <div class="result-grid">
+                  <article class="result-card">
+                    <span class="result-label">Corrente de Projeto (Ib)</span>
+                    <span class="result-value" id="res-current">0</span>
+                  </article>
+                  <article class="result-card">
+                    <span class="result-label">Capacidade do Cabo (Iz)</span>
+                    <span class="result-value" id="res-ampacity">0</span>
+                  </article>
+                  <article class="result-card">
+                    <span class="result-label">Queda de Tensão (V)</span>
+                    <span class="result-value" id="res-drop-v">0</span>
+                  </article>
+                  <article class="result-card">
+                    <span class="result-label">Queda de Tensão (%)</span>
+                    <span class="result-value" id="res-drop-pct">0</span>
+                  </article>
+                  <article class="result-card meter-wide">
+                    <span class="result-label">Fatores de Correção</span>
+                    <span class="result-value" id="res-factors">--</span>
+                  </article>
+                  <article class="result-card meter-wide">
+                    <span class="result-label">Status de Segurança</span>
+                    <span class="result-value" id="res-status">--</span>
+                  </article>
+                </div>
+
+                <div id="safety-message" class="safety-message"></div>
+
+                <div id="calculation-report" class="calculation-report" style="display: none;">
+                  <div class="report-sheet-top">
+                    <span>DIMENVOLT STUDIO</span>
+                    <span>MEMORIAL</span>
+                  </div>
+                  <h3><i class="fas fa-clipboard-list"></i> Relatório de Dimensionamento</h3>
+                  <p class="report-sheet-sub">Critérios NBR 5410 · Condutores e proteção</p>
+                  <div class="report-item">
+                    <span class="report-label">Tipo de Ligação:</span>
+                    <span class="report-value" id="report-connection-type">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Condutores Fase:</span>
+                    <span class="report-value" id="report-phase-conductors">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Condutor Neutro:</span>
+                    <span class="report-value" id="report-neutral">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Condutor PE:</span>
+                    <span class="report-value" id="report-pe">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Corrente de projeto (Ib):</span>
+                    <span class="report-value" id="report-ib">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Disjuntor:</span>
+                    <span class="report-value" id="report-breaker">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Capacidade do cabo (Iz):</span>
+                    <span class="report-value" id="report-iz">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Queda de tensão:</span>
+                    <span class="report-value" id="report-vd">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Margem térmica:</span>
+                    <span class="report-value" id="report-thermal-margin">--</span>
+                  </div>
+                  <div class="report-item">
+                    <span class="report-label">Status de segurança:</span>
+                    <span class="report-value" id="report-status-text">--</span>
+                  </div>
+                  <div class="report-reason" id="report-reason">
+                    <i class="fas fa-info-circle"></i> <span id="report-reason-text">--</span>
+                  </div>
+                  <div class="report-alternative" id="report-alternative" style="display: none;">
+                    <i class="fas fa-lightbulb"></i> <span id="report-alternative-text">--</span>
+                  </div>
+                </div>
+
+                <div class="pdf-actions">
+                  <button type="button" id="btn-generate-pdf" class="btn-pdf">
+                    <span class="pdf-btn-label">Gerar Relatório PDF</span>
+                    <b aria-hidden="true">↓</b>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="cable-table" class="ref-section">
+          <div class="ref-head">
+            <p class="eyebrow">Referência</p>
+            <h2>Tabela de Cabos (NBR 5410)</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Seção (mm²)</th><th>Cobre (A)</th><th>Alumínio (A)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1.5</td><td>17.5</td><td>--</td></tr>
+                <tr><td>2.5</td><td>24</td><td>--</td></tr>
+                <tr><td>4</td><td>32</td><td>--</td></tr>
+                <tr><td>6</td><td>41</td><td>--</td></tr>
+                <tr><td>10</td><td>57</td><td>44</td></tr>
+                <tr><td>16</td><td>76</td><td>59</td></tr>
+                <tr><td>25</td><td>101</td><td>78</td></tr>
+                <tr><td>35</td><td>125</td><td>96</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">Valores de referência para método B1, 30°C, até 3 condutores carregados.</p>
+        </section>
+
+        <section id="breaker-table" class="ref-section">
+          <div class="ref-head">
+            <p class="eyebrow">Proteção</p>
+            <h2>Disjuntores Padrão (Curva C)</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Corrente Nominal (A)</th><th>Aplicação Típica</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>6</td><td>Iluminação</td></tr>
+                <tr><td>10</td><td>Tomadas TUG</td></tr>
+                <tr><td>16</td><td>Tomadas TUE / Chuveiro</td></tr>
+                <tr><td>20</td><td>Ar condicionado</td></tr>
+                <tr><td>25</td><td>Forno / Secadora</td></tr>
+                <tr><td>32</td><td>Quadro parcial</td></tr>
+                <tr><td>40</td><td>Quadro parcial</td></tr>
+                <tr><td>50</td><td>Subalimentador</td></tr>
+                <tr><td>63</td><td>Subalimentador</td></tr>
+                <tr><td>80</td><td>Alimentador geral</td></tr>
+                <tr><td>100</td><td>Alimentador geral</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="about" class="about-section">
+          <div class="ref-head">
+            <p class="eyebrow">Metodologia</p>
+            <h2>Sobre a Calculadora</h2>
+          </div>
+          <div class="about-content">
+            <p>Ferramenta desenvolvida com base na <strong>NBR 5410</strong> para dimensionamento seguro de condutores e dispositivos de proteção.</p>
+            <ul>
+              <li><i class="fas fa-check"></i> Aplica fatores de correção por temperatura e agrupamento.</li>
+              <li><i class="fas fa-check"></i> Aumenta automaticamente a seção para atender queda de tensão.</li>
+              <li><i class="fas fa-check"></i> O disjuntor nunca ultrapassa a capacidade do cabo.</li>
+              <li><i class="fas fa-check"></i> Mínimo 2.5 mm² para TUG e 4 mm² para TUE conforme NBR 5410.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <span class="footer-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span> DimenVolt Studio</span>
+          <p>&copy; 2026 DimenVolt Studio · Todos os direitos reservados.</p>
+          <p>Consulte sempre um profissional habilitado.</p>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('particle-bg-canvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+
+      function createNoise() {
+        const permutation = [
+          151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140,
+          36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120,
+          234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33,
+          88, 237, 149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71,
+          134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133,
+          230, 220, 105, 92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161,
+          1, 216, 80, 73, 209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130,
+          116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250,
+          124, 123, 5, 202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227,
+          47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44,
+          154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98,
+          108, 110, 79, 113, 224, 232, 178, 185, 112, 104, 218, 246, 97, 228, 251, 34,
+          242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249, 14,
+          239, 107, 49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121,
+          50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243,
+          141, 128, 195, 78, 66, 215, 61, 156, 180,
+        ];
+
+        const p = new Array(512);
+        for (let i = 0; i < 256; i++) p[256 + i] = p[i] = permutation[i];
+
+        function fade(t) {
+          return t * t * t * (t * (t * 6 - 15) + 10);
+        }
+
+        function lerp(t, a, b) {
+          return a + t * (b - a);
+        }
+
+        function grad(hash, x, y, z) {
+          const h = hash & 15;
+          const u = h < 8 ? x : y;
+          const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+          return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+        }
+
+        return {
+          simplex3: (x, y, z) => {
+            const X = Math.floor(x) & 255;
+            const Y = Math.floor(y) & 255;
+            const Z = Math.floor(z) & 255;
+            x -= Math.floor(x);
+            y -= Math.floor(y);
+            z -= Math.floor(z);
+            const u = fade(x);
+            const v = fade(y);
+            const w = fade(z);
+            const A = p[X] + Y;
+            const AA = p[A] + Z;
+            const AB = p[A + 1] + Z;
+            const B = p[X + 1] + Y;
+            const BA = p[B] + Z;
+            const BB = p[B + 1] + Z;
+            return lerp(
+              w,
+              lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z)), lerp(u, grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z))),
+              lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1)), lerp(u, grad(p[AB + 1], x, y, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1)))
+            );
+          },
+        };
+      }
+
+      const noise = createNoise();
+      const particleCount = 2000;
+      const noiseIntensity = 0.003;
+      const particleSize = { min: 0.5, max: 2 };
+      const EXTRA_PX = 300;
+
+      canvas.width = window.innerWidth + EXTRA_PX;
+      canvas.height = window.innerHeight + EXTRA_PX;
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+
+      const particles = Array.from({ length: particleCount }, () => ({
+        x: Math.random() * canvasWidth,
+        y: Math.random() * canvasHeight,
+        size: Math.random() * (particleSize.max - particleSize.min) + particleSize.min,
+        velocity: { x: 0, y: 0 },
+        life: Math.random() * 100,
+        maxLife: 100 + Math.random() * 50,
+      }));
+
+      function animate() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        for (const particle of particles) {
+          particle.life += 1;
+          if (particle.life > particle.maxLife) {
+            particle.life = 0;
+            particle.x = Math.random() * canvasWidth;
+            particle.y = Math.random() * canvasHeight;
+          }
+          const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * 0.15;
+          const n = noise.simplex3(particle.x * noiseIntensity, particle.y * noiseIntensity, Date.now() * 0.0001);
+          const angle = n * Math.PI * 4;
+          particle.velocity.x = Math.cos(angle) * 2;
+          particle.velocity.y = Math.sin(angle) * 2;
+          particle.x += particle.velocity.x;
+          particle.y += particle.velocity.y;
+          if (particle.x < 0) particle.x = canvasWidth;
+          if (particle.x > canvasWidth) particle.x = 0;
+          if (particle.y < 0) particle.y = canvasHeight;
+          if (particle.y > canvasHeight) particle.y = 0;
+          ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
+  </script>
+  <script src="/src/frontend/scripts/motor_calculo.js"></script>
+  <script src="/src/frontend/scripts/script.js"></script>
+  <script src="/src/reports/pdfGenerator.js"></script>
+  <script src="/src/reports/pdf-report.js"></script>
+</body>
+</html>

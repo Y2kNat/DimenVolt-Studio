@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/src/frontend/pages/index.html" },
+    { "source": "/landing", "destination": "/src/frontend/pages/index.html" },
+    { "source": "/calculadora", "destination": "/src/frontend/pages/calculadora.html" },
+    { "source": "/levantamento", "destination": "/src/frontend/pages/levantamento.html" },
+    { "source": "/quadro", "destination": "/src/frontend/pages/quadro.html" }
+  ]
+}

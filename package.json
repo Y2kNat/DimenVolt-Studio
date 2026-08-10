@@ -1,0 +1,24 @@
+{
+  "name": "dimenvolt",
+  "version": "1.0.0",
+  "description": "DimenVolt Studio — levantamento e dimensionamento elétrico NBR 5410",
+  "main": "local_dev/server.js",
+  "scripts": {
+    "start": "node local_dev/server.js",
+    "dev": "node local_dev/server.js",
+    "test": "node local_dev/tests/service_test.js",
+    "docs:pdf": "node local_dev/tools/generate-docs.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@sparticuz/chromium": "^149.0.0",
+    "express": "^4.21.2",
+    "puppeteer": "^24.2.1",
+    "puppeteer-core": "^24.43.1"
+  },
+  "allowScripts": {
+    "puppeteer@24.43.1": true
+  }
+}
