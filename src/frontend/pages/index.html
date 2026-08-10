@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DimenVolt Studio: plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410." />
+  <meta name="theme-color" content="#050505" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <title>DimenVolt Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/frontend/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/frontend/styles/landing.css" />
+</head>
+<body>
+  <div class="grid-field" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="nav shell">
+    <a class="brand" href="#inicio" aria-label="DimenVolt Studio, início">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy">
+        <strong>DimenVolt</strong>Studio
+      </span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#tecnologia">Tecnologia</a>
+      <a href="#como-funciona">Fluxo</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-ghost" href="/calculadora">Calculadora</a>
+      <a class="nav-action" href="/levantamento">Levantamento <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero shell">
+      <div class="hero-copy reveal">
+        <h1 class="t-stagger">
+          <span class="t-stagger-line">DimenVolt</span>
+          <span class="t-stagger-line muted">Studio</span>
+        </h1>
+        <p class="lede">Plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410.</p>
+        <div class="hero-actions">
+          <a class="button primary t-learn" href="#modulos">
+            Explorar módulos
+            <span class="t-learn-chevron" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        </div>
+        <div class="trust">
+        </div>
+      </div>
+
+      <div class="product-preview reveal" aria-label="Prévia da plataforma">
+        <div class="preview-top">
+          <div class="window-dots"><i></i><i></i><i></i></div>
+          <span>STUDIO / WORKBENCH</span>
+          <span class="status">● OPERACIONAL</span>
+        </div>
+        <div class="circuit-line" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="preview-body">
+          <aside>
+            <p>MÓDULOS</p>
+            <a class="module-link active" href="/levantamento"><span>Levantamento</span></a>
+            <a class="module-link" href="/calculadora"><span>Calculadora</span></a>
+            <a class="module-link" href="/calculadora#cable-table"><span>Tabelas NBR</span></a>
+            <hr>
+            <p>PROJETO</p>
+            <strong>Residencial<br>Pinheiros</strong>
+          </aside>
+          <div class="analysis">
+            <div class="analysis-heading">
+              <div>
+                <p>FLUXO TÉCNICO</p>
+                <h2>Do ambiente ao condutor</h2>
+              </div>
+              <span>NBR 5410</span>
+            </div>
+            <div class="metric-grid">
+              <div>
+                <p>PONTOS LEVANTADOS</p>
+                <strong>47 <small>un</small></strong>
+              </div>
+              <div>
+                <p>POTÊNCIA ESTIMADA</p>
+                <strong>8,5 <small>kW</small></strong>
+              </div>
+            </div>
+            <div class="result-card">
+              <span class="result-label">PRÓXIMA ETAPA</span>
+              <div>
+                <strong>Dimensionar</strong>
+                <span>Cabo · Disjuntor · Queda de tensão</span>
+              </div>
+              <div class="bar"><i></i></div>
+              <p>Critérios aplicados <b>automáticos</b> <span>›</span> conforme NBR 5410</p>
+            </div>
+            <div class="recommendation">
+              <span>STATUS</span>
+              <strong>Pronto</strong>
+              <p>Memorial técnico disponível</p>
+              <b>✓</b>
+            </div>
+          </div>
+        </div>
+        <div class="preview-footer">
+          <span>DimenVolt Studio · Engenharia com critério</span>
+          <span>GERAR PDF →</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="recursos" class="features shell">
+      <div class="section-head reveal">
+        <h2>Decisões técnicas, <em>sem ruído.</em></h2>
+        <p>Uma plataforma objetiva para as escolhas que definem a segurança de uma instalação.</p>
+      </div>
+      <div class="feature-grid">
+        <a class="feature-card reveal t-tilt" href="/levantamento">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">▦</span>
+            <h3>Levantamento Elétrico</h3>
+            <p>Organize ambientes, pontos e potências antes do dimensionamento — com relatório em PDF.</p>
+          </div>
+        </a>
+        <a class="feature-card reveal t-tilt" href="/calculadora">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">⌁</span>
+            <h3>Dimensionamento de Cabos</h3>
+            <p>Cálculos considerando corrente, distância, método de instalação e capacidade do condutor.</p>
+          </div>
+        </a>
+        <article class="feature-card reveal t-tilt">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">▣</span>
+            <h3>Disjuntores Inteligentes</h3>
+            <p>Seleção automática conforme corrente de projeto e proteção do circuito.</p>
+          </div>
+        </article>
+        <article class="feature-card reveal t-tilt">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">◌</span>
+            <h3>Queda de Tensão</h3>
+            <p>Análise das perdas elétricas para garantir eficiência e conformidade.</p>
+          </div>
+        </article>
+        <article class="feature-card reveal t-tilt">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">⌘</span>
+            <h3>Fatores de Correção</h3>
+            <p>Temperatura, agrupamento e condições de instalação aplicados automaticamente.</p>
+          </div>
+        </article>
+        <article class="feature-card reveal t-tilt">
+          <div class="t-tilt-card">
+            <span class="t-tilt-glare" aria-hidden="true"></span>
+            <span class="icon">▤</span>
+            <h3>Relatórios Técnicos</h3>
+            <p>Resultados organizados em memoriais profissionais para entrega e arquivo.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="workflow">
+      <div class="shell">
+        <div class="section-head reveal">
+          <h2>Do levantamento ao parecer, <em>um fluxo claro.</em></h2>
+        </div>
+        <div class="steps">
+          <article class="step reveal">
+            <div class="step-number">01</div>
+            <h3>Levante a instalação</h3>
+            <p>Ambientes, tomadas, iluminação e potências estimadas em fluxo guiado.</p>
+            <div class="mini-form">
+              <span>AMBIENTES <b>5</b></span>
+              <span>TOMADAS <b>32</b></span>
+              <span>POTÊNCIA <b>8.500 W</b></span>
+            </div>
+          </article>
+          <article class="step reveal">
+            <div class="step-number">02</div>
+            <h3>Dimensione o circuito</h3>
+            <p>Corrente, seção do cabo, disjuntor e queda de tensão conforme NBR 5410.</p>
+            <div class="analysis-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="step reveal">
+            <div class="step-number">03</div>
+            <h3>Gere o documento</h3>
+            <p>Memorial técnico do levantamento e parecer de dimensionamento em PDF.</p>
+            <div class="mini-result">
+              <span>✓ Pronto</span>
+              <strong>PDF</strong>
+              <small>Relatório técnico</small>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tecnologia" class="technology shell">
+      <div class="tech-copy reveal">
+        <h2>Um motor técnico que mostra <em>como chegou lá.</em></h2>
+        <p>Resultados não devem ser caixas-pretas. Cada recomendação vem acompanhada dos parâmetros e critérios que a sustentam.</p>
+        <ul>
+          <li>Motor de cálculo especializado</li>
+          <li>Base técnica integrada</li>
+          <li>Critérios baseados na NBR 5410</li>
+          <li>Análises automáticas</li>
+          <li>Resultados explicados</li>
+          <li>Relatórios profissionais</li>
+        </ul>
+      </div>
+      <div class="report reveal">
+        <div class="paper-top"><span>DIMENVOLT STUDIO</span><span>RT-0004.26</span></div>
+        <h3>Relatório <em>Técnico</em></h3>
+        <p class="paper-sub">MEMORIAL DE DIMENSIONAMENTO · CIRCUITO 04</p>
+        <div class="paper-rule"></div>
+        <dl>
+          <div><dt>CIRCUITO</dt><dd>Tomadas de uso geral</dd></div>
+          <div><dt>CORRENTE DE PROJETO</dt><dd>18,4 A</dd></div>
+          <div><dt>CABO RECOMENDADO</dt><dd>Cu 4,0 mm²</dd></div>
+          <div><dt>DISJUNTOR</dt><dd>20 A · Curva C</dd></div>
+          <div><dt>QUEDA DE TENSÃO</dt><dd>1,72%</dd></div>
+        </dl>
+        <div class="justification">
+          <span>JUSTIFICATIVA TÉCNICA</span>
+          <p>Seção selecionada conforme capacidade de condução corrigida e limite de queda de tensão.</p>
+        </div>
+        <div class="paper-foot">Documento gerado pela plataforma <b>DIMENVOLT STUDIO</b></div>
+      </div>
+    </section>
+
+    <section id="modulos" class="modules shell reveal">
+      <div class="section-head">
+        <h2>Escolha o ponto de entrada.</h2>
+      </div>
+      <div class="module-grid">
+        <a class="module-card" href="/levantamento">
+          <h3>Levantamento Elétrico</h3>
+          <p>Sessão temporária · ambientes, pontos, dimensões e PDF.</p>
+          <span class="module-cta">Abrir módulo →</span>
+        </a>
+        <a class="module-card" href="/calculadora">
+          <h3>Calculadora NBR 5410</h3>
+          <p>Workbench de dimensionamento de cabos e disjuntores.</p>
+          <span class="module-cta">Abrir workbench →</span>
+        </a>
+        <a class="module-card" href="/documents/DimenVolt-Documentos-Tecnicos.pdf" download="DimenVolt - Documentos Técnicos.pdf">
+          <h3>Documentos Técnicos</h3>
+          <p>Memoriais de dimensionamento e relatórios de levantamento em PDF.</p>
+          <span class="module-cta">Ver memorial →</span>
+        </a>
+        <a class="module-card" href="/quadro">
+          <h3>Quadro de Distribuição</h3>
+          <p>Circuitos, proteções e cargas organizados em um quadro elétrico estruturado.</p>
+          <span class="module-cta">Conhecer módulo →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="final-cta shell reveal">
+      <h2>Do levantamento ao<br><em>dimensionamento.</em></h2>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <a class="brand" href="#inicio">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy">
+        <strong>DimenVolt</strong>
+        <em>Studio</em>
+      </span>
+    </a>
+    <span>© 2026 · Engenharia com critério.</span>
+    <div class="footer-links">
+      <a href="/levantamento">Levantamento</a>
+      <a href="/calculadora">Calculadora</a>
+    </div>
+  </footer>
+
+  <script src="/src/frontend/scripts/landing.js"></script>
+</body>
+</html>

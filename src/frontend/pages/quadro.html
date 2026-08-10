@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DimenVolt Studio — organização de circuitos, proteções e cargas em um quadro de distribuição." />
+  <meta name="theme-color" content="#050505" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <title>DimenVolt Studio · Quadro de Distribuição</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/frontend/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/frontend/styles/quadro.css" />
+</head>
+<body>
+  <div class="grid-field" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="qd-topbar shell">
+    <a class="brand" href="/" aria-label="DimenVolt Studio, início">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy">
+        <strong>DimenVolt</strong>
+        <em>Studio</em>
+      </span>
+    </a>
+    <div class="qd-topbar-meta">
+      <span class="chip">Sessão temporária</span>
+      <a class="qd-link" href="/levantamento">Levantamento ↗</a>
+    </div>
+  </header>
+
+  <div class="qd-progress" id="qdProgress" hidden>
+    <div class="qd-progress-track" aria-hidden="true">
+      <div class="qd-progress-fill" id="qdProgressFill"></div>
+      <span class="qd-progress-node" data-node="1"></span>
+      <span class="qd-progress-node" data-node="2"></span>
+      <span class="qd-progress-node" data-node="3"></span>
+    </div>
+    <p class="qd-progress-label" id="qdProgressLabel">Etapa 1 · Dados do quadro</p>
+  </div>
+
+  <main class="qd-shell">
+    <div class="qd-stage" id="qdStage">
+
+      <!-- 0 · Início -->
+      <section class="qd-panel is-active" data-step="0" id="step-start">
+        <div class="qd-hero-card">
+          <p class="eyebrow">Módulo Studio</p>
+          <h1 class="qd-hero-title">Quadro de Distribuição</h1>
+          <p class="qd-lede">Organize os circuitos, proteções e cargas do quadro elétrico em uma estrutura visual.</p>
+          <ul class="qd-hero-points">
+            <li>Circuitos, disjuntores e fases em fluxo guiado</li>
+            <li>Resumo automático de potência e balanceamento</li>
+            <li>Documento técnico em PDF</li>
+          </ul>
+          <p class="qd-session-note">Os dados existem só nesta sessão. Atualizar ou fechar a página apaga o quadro.</p>
+          <button type="button" class="qd-btn qd-btn-primary" id="btnStart">
+            Criar quadro <b>→</b>
+          </button>
+        </div>
+      </section>
+
+      <!-- 1 · Dados do quadro -->
+      <section class="qd-panel" data-step="1" id="step-dados" hidden>
+        <header class="qd-panel-head">
+          <p class="eyebrow">Etapa 01</p>
+          <h2>Dados do quadro</h2>
+          <p>Identifique o quadro e defina a tensão e o sistema de alimentação.</p>
+        </header>
+        <form class="qd-card qd-form" id="formDados" novalidate>
+          <div class="qd-field">
+            <label for="qdIdentificacao">Identificação do quadro</label>
+            <input type="text" id="qdIdentificacao" name="identificacao" placeholder="Ex.: QD-01" maxlength="40" required autocomplete="off" />
+            <span class="qd-field-hint" id="qdIdentificacaoHint" hidden>Informe a identificação do quadro para continuar.</span>
+          </div>
+          <div class="qd-field">
+            <span class="qd-label">Tensão do sistema</span>
+            <div class="qd-seg qd-seg-3" role="radiogroup" aria-label="Tensão do sistema" data-group="tensao">
+              <span class="qd-seg-pill" aria-hidden="true"></span>
+              <button type="button" class="qd-seg-btn is-active" data-value="127V">127V</button>
+              <button type="button" class="qd-seg-btn" data-value="220V">220V</button>
+              <button type="button" class="qd-seg-btn" data-value="380V">380V</button>
+            </div>
+          </div>
+          <div class="qd-field">
+            <span class="qd-label">Sistema</span>
+            <div class="qd-seg qd-seg-3" role="radiogroup" aria-label="Sistema" data-group="sistema">
+              <span class="qd-seg-pill" aria-hidden="true"></span>
+              <button type="button" class="qd-seg-btn is-active" data-value="Monofásico">Monofásico</button>
+              <button type="button" class="qd-seg-btn" data-value="Bifásico">Bifásico</button>
+              <button type="button" class="qd-seg-btn" data-value="Trifásico">Trifásico</button>
+            </div>
+          </div>
+        </form>
+        <div class="qd-actions">
+          <button type="button" class="qd-btn qd-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="qd-btn qd-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 2 · Circuitos -->
+      <section class="qd-panel" data-step="2" id="step-circuitos" hidden>
+        <header class="qd-panel-head">
+          <p class="eyebrow">Etapa 02</p>
+          <h2>Circuitos</h2>
+          <p>Adicione os circuitos que compõem o quadro, com carga, proteção e fase.</p>
+        </header>
+        <form class="qd-card qd-form qd-circuit-form" id="formCircuito" novalidate>
+          <div class="qd-circuit-grid">
+            <div class="qd-field">
+              <label for="circId">Identificação</label>
+              <input type="text" id="circId" name="id" placeholder="Ex.: C1" maxlength="20" autocomplete="off" />
+            </div>
+            <div class="qd-field">
+              <label for="circDescricao">Descrição</label>
+              <input type="text" id="circDescricao" name="descricao" placeholder="Ex.: Iluminação" maxlength="80" autocomplete="off" />
+            </div>
+          </div>
+          <div class="qd-field">
+            <span class="qd-label">Tipo</span>
+            <select id="circTipo" name="tipo" class="qd-select">
+              <option value="Iluminação">Iluminação</option>
+              <option value="TUG">TUG</option>
+              <option value="TUE">TUE</option>
+              <option value="Chuveiro">Chuveiro</option>
+              <option value="Ar-condicionado">Ar-condicionado</option>
+              <option value="Forno">Forno</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="qd-circuit-grid qd-circuit-grid-3">
+            <div class="qd-field">
+              <label for="circPotencia">Potência (W)</label>
+              <input type="number" inputmode="decimal" id="circPotencia" name="potencia" placeholder="Ex.: 800" min="0" step="any" />
+            </div>
+            <div class="qd-field">
+              <label for="circCorrente">Corrente (A)</label>
+              <input type="number" inputmode="decimal" id="circCorrente" name="corrente" placeholder="Estimada" min="0" step="any" />
+              <span class="qd-field-sub" id="circCorrenteSub">Vazio = estimativa automática</span>
+            </div>
+            <div class="qd-field">
+              <label for="circDisjuntor">Disjuntor (A)</label>
+              <input type="number" inputmode="decimal" id="circDisjuntor" name="disjuntor" placeholder="Ex.: 10" min="0" step="any" />
+            </div>
+          </div>
+          <div class="qd-field">
+            <span class="qd-label">Fase</span>
+            <div class="qd-seg qd-seg-4" role="radiogroup" aria-label="Fase" data-group="fase">
+              <span class="qd-seg-pill" aria-hidden="true"></span>
+              <button type="button" class="qd-seg-btn is-active" data-value="L1">L1</button>
+              <button type="button" class="qd-seg-btn" data-value="L2">L2</button>
+              <button type="button" class="qd-seg-btn" data-value="L3">L3</button>
+              <button type="button" class="qd-seg-btn" data-value="N/A">N/A</button>
+            </div>
+          </div>
+          <div class="qd-circuit-actions">
+            <button type="button" class="qd-btn qd-btn-primary" id="btnAddCircuit">+ Adicionar circuito</button>
+            <button type="button" class="qd-btn qd-btn-ghost" id="btnCancelEdit" hidden>Cancelar edição</button>
+          </div>
+        </form>
+        <p class="qd-field-hint" id="circuitosHint" hidden>Adicione ao menos um circuito para continuar.</p>
+        <div id="circuitsRoot" class="qd-stack"></div>
+        <div class="qd-actions">
+          <button type="button" class="qd-btn qd-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="qd-btn qd-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 3 · Revisão -->
+      <section class="qd-panel" data-step="3" id="step-revisao" hidden>
+        <header class="qd-panel-head">
+          <p class="eyebrow">Etapa 03</p>
+          <h2>Quadro de distribuição</h2>
+          <p>Revise a representação, o resumo e o balanceamento do quadro.</p>
+        </header>
+        <div class="qd-rev-grid">
+          <div class="qd-rev-main">
+            <div id="qdVisualRoot"></div>
+            <div id="qdSummaryRoot" class="qd-summary-grid"></div>
+            <div id="qdBalanceRoot"></div>
+            <div id="qdTableRoot"></div>
+          </div>
+        </div>
+        <div class="qd-actions qd-actions-final">
+          <button type="button" class="qd-btn qd-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="qd-btn qd-btn-primary" id="btnPdf">
+            <span class="qd-btn-label">Gerar PDF</span>
+            <b>↓ PDF</b>
+          </button>
+        </div>
+        <p class="qd-pdf-status" id="pdfStatus" role="status" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="qd-footer shell">
+    <span>DimenVolt Studio · Quadro de distribuição</span>
+    <a href="/">Voltar à landing</a>
+  </footer>
+
+  <script src="/src/reports/pdfGenerator.js"></script>
+  <script src="/src/reports/pdf-report.js"></script>
+  <script src="/src/frontend/scripts/quadro.js"></script>
+</body>
+</html>
