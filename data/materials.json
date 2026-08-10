@@ -1,0 +1,485 @@
+{
+  "version": "1.0.0",
+  "catalog": "Materiais para instalações elétricas — levantamento de obra",
+  "categories": [
+    {
+      "id": "condutores",
+      "name": "Condutores",
+      "order": 1,
+      "materials": [
+        {
+          "id": "cabo-flexivel-1.5mm",
+          "name": "Cabo flexível 1,5 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para circuitos de iluminação",
+          "specifications": { "section_mm2": 1.5, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-2.5mm",
+          "name": "Cabo flexível 2,5 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para tomadas de uso geral (TUG)",
+          "specifications": { "section_mm2": 2.5, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-4mm",
+          "name": "Cabo flexível 4 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para tomadas de uso específico (TUE)",
+          "specifications": { "section_mm2": 4, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-6mm",
+          "name": "Cabo flexível 6 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para circuitos de maior demanda",
+          "specifications": { "section_mm2": 6, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-10mm",
+          "name": "Cabo flexível 10 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para alimentadores e circuitos pesados",
+          "specifications": { "section_mm2": 10, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-16mm",
+          "name": "Cabo flexível 16 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para alimentadores",
+          "specifications": { "section_mm2": 16, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-25mm",
+          "name": "Cabo flexível 25 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para alimentadores",
+          "specifications": { "section_mm2": 25, "conductor": "copper" },
+          "active": true
+        },
+        {
+          "id": "cabo-flexivel-35mm",
+          "name": "Cabo flexível 35 mm²",
+          "unit": "m",
+          "category": "condutores",
+          "description": "Condutor flexível de cobre para alimentadores",
+          "specifications": { "section_mm2": 35, "conductor": "copper" },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "protecao",
+      "name": "Proteção",
+      "order": 2,
+      "materials": [
+        {
+          "id": "disjuntor-6a-curva-c",
+          "name": "Disjuntor 6 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor monopolar Curva C",
+          "specifications": { "current_A": 6, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-10a-curva-c",
+          "name": "Disjuntor 10 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor monopolar Curva C",
+          "specifications": { "current_A": 10, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-16a-curva-c",
+          "name": "Disjuntor 16 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor monopolar Curva C",
+          "specifications": { "current_A": 16, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-20a-curva-c",
+          "name": "Disjuntor 20 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor monopolar Curva C",
+          "specifications": { "current_A": 20, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-25a-curva-c",
+          "name": "Disjuntor 25 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor monopolar Curva C",
+          "specifications": { "current_A": 25, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-32a-curva-c",
+          "name": "Disjuntor 32 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor Curva C",
+          "specifications": { "current_A": 32, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-40a-curva-c",
+          "name": "Disjuntor 40 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor Curva C",
+          "specifications": { "current_A": 40, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-50a-curva-c",
+          "name": "Disjuntor 50 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor Curva C",
+          "specifications": { "current_A": 50, "curve": "C", "poles": 1 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-63a-curva-c",
+          "name": "Disjuntor 63 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor tripolar Curva C",
+          "specifications": { "current_A": 63, "curve": "C", "poles": 3 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-80a-curva-c",
+          "name": "Disjuntor 80 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor tripolar Curva C",
+          "specifications": { "current_A": 80, "curve": "C", "poles": 3 },
+          "active": true
+        },
+        {
+          "id": "disjuntor-100a-curva-c",
+          "name": "Disjuntor 100 A",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Disjuntor tripolar Curva C",
+          "specifications": { "current_A": 100, "curve": "C", "poles": 3 },
+          "active": true
+        },
+        {
+          "id": "idr-40a-30ma",
+          "name": "Interruptor diferencial residual (IDR) 40 A / 30 mA",
+          "unit": "un",
+          "category": "protecao",
+          "description": "Proteção diferencial residual bipolar de alta sensibilidade",
+          "specifications": { "current_A": 40, "residual_mA": 30, "poles": 2 },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "eletrodutos",
+      "name": "Eletrodutos e acessórios",
+      "order": 3,
+      "materials": [
+        {
+          "id": "eletroduto-corrugado-20mm",
+          "name": "Eletroduto corrugado 20 mm",
+          "unit": "m",
+          "category": "eletrodutos",
+          "description": "Eletroduto flexível corrugado para circuitos embutidos",
+          "specifications": { "diameter_mm": 20, "type": "flexible" },
+          "active": true
+        },
+        {
+          "id": "eletroduto-corrugado-25mm",
+          "name": "Eletroduto corrugado 25 mm",
+          "unit": "m",
+          "category": "eletrodutos",
+          "description": "Eletroduto flexível corrugado para circuitos embutidos",
+          "specifications": { "diameter_mm": 25, "type": "flexible" },
+          "active": true
+        },
+        {
+          "id": "eletroduto-corrugado-32mm",
+          "name": "Eletroduto corrugado 32 mm",
+          "unit": "m",
+          "category": "eletrodutos",
+          "description": "Eletroduto flexível corrugado para alimentadores",
+          "specifications": { "diameter_mm": 32, "type": "flexible" },
+          "active": true
+        },
+        {
+          "id": "eletroduto-rigido-20mm",
+          "name": "Eletroduto rígido 20 mm",
+          "unit": "m",
+          "category": "eletrodutos",
+          "description": "Eletroduto rígido de PVC para trechos aparentes",
+          "specifications": { "diameter_mm": 20, "type": "rigid" },
+          "active": true
+        },
+        {
+          "id": "luva-eletroduto",
+          "name": "Luva de emenda para eletroduto",
+          "unit": "un",
+          "category": "eletrodutos",
+          "description": "Luva de união para eletrodutos",
+          "active": true
+        },
+        {
+          "id": "curva-eletroduto",
+          "name": "Curva de eletroduto",
+          "unit": "un",
+          "category": "eletrodutos",
+          "description": "Curva para mudança de direção em eletrodutos",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "caixas",
+      "name": "Caixas e acessórios",
+      "order": 4,
+      "materials": [
+        {
+          "id": "caixa-4x2",
+          "name": "Caixa 4x2",
+          "unit": "un",
+          "category": "caixas",
+          "description": "Caixa de embutir para tomadas e interruptores",
+          "specifications": { "size": "4x2" },
+          "active": true
+        },
+        {
+          "id": "caixa-4x4",
+          "name": "Caixa 4x4",
+          "unit": "un",
+          "category": "caixas",
+          "description": "Caixa de embutir para pontos de comando e emendas",
+          "specifications": { "size": "4x4" },
+          "active": true
+        },
+        {
+          "id": "caixa-octogonal-4x4",
+          "name": "Caixa octogonal 4x4",
+          "unit": "un",
+          "category": "caixas",
+          "description": "Caixa de embutir para pontos de iluminação",
+          "specifications": { "size": "4x4 octogonal" },
+          "active": true
+        },
+        {
+          "id": "caixa-passagem",
+          "name": "Caixa de passagem",
+          "unit": "un",
+          "category": "caixas",
+          "description": "Caixa para passagem e inspeção de condutores",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "tomadas",
+      "name": "Tomadas",
+      "order": 5,
+      "materials": [
+        {
+          "id": "tomada-tug-10a",
+          "name": "Tomada 2P+T 10 A (TUG)",
+          "unit": "un",
+          "category": "tomadas",
+          "description": "Tomada de uso geral com aterramento",
+          "specifications": { "current_A": 10, "type": "tug", "pins": "2P+T" },
+          "active": true
+        },
+        {
+          "id": "tomada-tue-20a",
+          "name": "Tomada 2P+T 20 A (TUE)",
+          "unit": "un",
+          "category": "tomadas",
+          "description": "Tomada de uso específico para chuveiro, torneira e ar-condicionado",
+          "specifications": { "current_A": 20, "type": "tue", "pins": "2P+T" },
+          "active": true
+        },
+        {
+          "id": "tomada-tue-32a",
+          "name": "Tomada 2P+T 32 A (TUE)",
+          "unit": "un",
+          "category": "tomadas",
+          "description": "Tomada de uso específico para equipamentos de maior corrente",
+          "specifications": { "current_A": 32, "type": "tue", "pins": "2P+T" },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "interruptores",
+      "name": "Interruptores",
+      "order": 6,
+      "materials": [
+        {
+          "id": "interruptor-simples",
+          "name": "Interruptor simples",
+          "unit": "un",
+          "category": "interruptores",
+          "description": "Interruptor de uma seção para comando de iluminação",
+          "specifications": { "type": "simple" },
+          "active": true
+        },
+        {
+          "id": "interruptor-paralelo",
+          "name": "Interruptor paralelo (three-way)",
+          "unit": "un",
+          "category": "interruptores",
+          "description": "Interruptor para comando de iluminação em dois pontos",
+          "specifications": { "type": "parallel" },
+          "active": true
+        },
+        {
+          "id": "interruptor-duplo",
+          "name": "Interruptor duplo",
+          "unit": "un",
+          "category": "interruptores",
+          "description": "Interruptor de duas seções para comando independente",
+          "specifications": { "type": "double" },
+          "active": true
+        },
+        {
+          "id": "interruptor-intermediario",
+          "name": "Interruptor intermediário",
+          "unit": "un",
+          "category": "interruptores",
+          "description": "Interruptor para comando de iluminação em três ou mais pontos",
+          "specifications": { "type": "intermediate" },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "iluminacao",
+      "name": "Iluminação",
+      "order": 7,
+      "materials": [
+        {
+          "id": "ponto-iluminacao-bocal",
+          "name": "Ponto de iluminação — bocal E27",
+          "unit": "un",
+          "category": "iluminacao",
+          "description": "Ponto de luz com bocal para lâmpada",
+          "specifications": { "type": "bocal" },
+          "active": true
+        },
+        {
+          "id": "plafon-led-embutir",
+          "name": "Plafon LED para embutir",
+          "unit": "un",
+          "category": "iluminacao",
+          "description": "Luminária LED de sobrepor para pontos de iluminação",
+          "specifications": { "type": "plafon", "technology": "LED" },
+          "active": true
+        },
+        {
+          "id": "spot-led-embutir",
+          "name": "Spot LED embutir",
+          "unit": "un",
+          "category": "iluminacao",
+          "description": "Luminária de embutir para forros",
+          "specifications": { "type": "spot", "technology": "LED" },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "quadros",
+      "name": "Quadros e componentes",
+      "order": 8,
+      "materials": [
+        {
+          "id": "quadro-distribuicao",
+          "name": "Quadro de distribuição",
+          "unit": "un",
+          "category": "quadros",
+          "description": "Quadro de distribuição de circuitos terminais",
+          "specifications": { "type": "distribution" },
+          "active": true
+        },
+        {
+          "id": "trilho-din",
+          "name": "Trilho DIN",
+          "unit": "un",
+          "category": "quadros",
+          "description": "Trilho de fixação para dispositivos modulares",
+          "specifications": { "type": "din" },
+          "active": true
+        },
+        {
+          "id": "barramento",
+          "name": "Barramento de fase e neutro",
+          "unit": "un",
+          "category": "quadros",
+          "description": "Conjunto de barramentos para distribuição interna",
+          "specifications": { "type": "busbar" },
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "acessorios",
+      "name": "Acessórios",
+      "order": 9,
+      "materials": [
+        {
+          "id": "fita-isolante",
+          "name": "Fita isolante",
+          "unit": "un",
+          "category": "acessorios",
+          "description": "Fita isolante de PVC para emendas",
+          "active": true
+        },
+        {
+          "id": "conector-cabo",
+          "name": "Conector para cabo",
+          "unit": "un",
+          "category": "acessorios",
+          "description": "Conector de emenda e derivação",
+          "active": true
+        },
+        {
+          "id": "bucha-parafuso",
+          "name": "Bucha e parafuso",
+          "unit": "pct",
+          "category": "acessorios",
+          "description": "Kit de fixação para eletrodutos e caixas",
+          "active": true
+        },
+        {
+          "id": "abraçadeira",
+          "name": "Abraçadeira para eletroduto",
+          "unit": "un",
+          "category": "acessorios",
+          "description": "Fixação de eletrodutos aparentes",
+          "active": true
+        }
+      ]
+    }
+  ]
+}

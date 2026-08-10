@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DimenVolt Studio — levantamento elétrico residencial antes do dimensionamento." />
+  <meta name="theme-color" content="#050505" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <title>DimenVolt Studio · Levantamento Elétrico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/frontend/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/frontend/styles/levantamento.css" />
+</head>
+<body>
+  <div class="grid-field" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="lv-topbar shell">
+    <a class="brand" href="/" aria-label="DimenVolt Studio, início">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy">
+        <strong>DimenVolt</strong>
+        <em>Studio</em>
+      </span>
+    </a>
+    <div class="lv-topbar-meta">
+      <span class="chip">Sessão temporária</span>
+      <a class="lv-link" href="/calculadora">Calculadora ↗</a>
+    </div>
+  </header>
+
+  <div class="lv-progress" id="lvProgress" hidden>
+    <div class="lv-progress-track" aria-hidden="true">
+      <div class="lv-progress-fill" id="lvProgressFill"></div>
+      <span class="lv-progress-node" data-node="1"></span>
+      <span class="lv-progress-node" data-node="2"></span>
+      <span class="lv-progress-node" data-node="3"></span>
+      <span class="lv-progress-node" data-node="4"></span>
+      <span class="lv-progress-node" data-node="5"></span>
+    </div>
+    <p class="lv-progress-label" id="lvProgressLabel">Etapa 1 · Dados da obra</p>
+  </div>
+
+  <main class="lv-shell">
+    <div class="lv-stage" id="lvStage">
+
+      <!-- 0 · Início -->
+      <section class="lv-panel is-active" data-step="0" id="step-start">
+        <div class="lv-hero-card">
+          <p class="eyebrow">Módulo Studio</p>
+          <h1 class="lv-hero-title">Levantamento Elétrico</h1>
+          <p class="lv-lede">Organize os pontos elétricos da instalação antes do dimensionamento.</p>
+          <ul class="lv-hero-points">
+            <li>Ambientes e cargas em fluxo guiado</li>
+            <li>Dimensionamento por circuito (iluminação, TUG e TUE)</li>
+            <li>Relatório técnico em PDF</li>
+          </ul>
+          <p class="lv-session-note">Os dados existem só nesta sessão. Atualizar ou fechar a página apaga o levantamento.</p>
+          <button type="button" class="lv-btn lv-btn-primary" id="btnStart">
+            Iniciar levantamento <b>→</b>
+          </button>
+        </div>
+      </section>
+
+      <!-- 1 · Dados do cliente -->
+      <section class="lv-panel" data-step="1" id="step-obra" hidden>
+        <header class="lv-panel-head">
+          <p class="eyebrow">Etapa 01</p>
+          <h2>Dados do cliente</h2>
+          <p>Identifique o cliente e as condições elétricas de partida da instalação.</p>
+        </header>
+        <form class="lv-card lv-form" id="formObra" novalidate>
+          <div class="lv-field">
+            <label for="clienteNome">Nome do cliente</label>
+            <input type="text" id="clienteNome" name="cliente" placeholder="Ex.: João da Silva" maxlength="120" required autocomplete="off" aria-describedby="clienteHint" />
+            <span class="lv-field-hint" id="clienteHint" hidden>Informe o nome do cliente para continuar.</span>
+          </div>
+          <div class="lv-field">
+            <span class="lv-label">Tipo de instalação</span>
+            <div class="lv-seg" role="radiogroup" aria-label="Tipo de instalação" data-group="tipo">
+              <span class="lv-seg-pill" aria-hidden="true"></span>
+              <button type="button" class="lv-seg-btn is-active" data-value="Residencial">Residencial</button>
+              <button type="button" class="lv-seg-btn" data-value="Comercial">Comercial</button>
+              <button type="button" class="lv-seg-btn" data-value="Industrial">Industrial</button>
+            </div>
+          </div>
+          <div class="lv-field">
+            <span class="lv-label">Tensão</span>
+            <div class="lv-seg" role="radiogroup" aria-label="Tensão" data-group="tensao">
+              <span class="lv-seg-pill" aria-hidden="true"></span>
+              <button type="button" class="lv-seg-btn is-active" data-value="127V">127V</button>
+              <button type="button" class="lv-seg-btn" data-value="220V">220V</button>
+              <button type="button" class="lv-seg-btn" data-value="380V">380V</button>
+            </div>
+          </div>
+        </form>
+        <div class="lv-actions">
+          <button type="button" class="lv-btn lv-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="lv-btn lv-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 2 · Ambientes -->
+      <section class="lv-panel" data-step="2" id="step-ambientes" hidden>
+        <header class="lv-panel-head">
+          <p class="eyebrow">Etapa 02</p>
+          <h2>Ambientes</h2>
+          <p>Informe a quantidade e os pontos elétricos de cada ambiente.</p>
+        </header>
+        <div id="ambientesRoot" class="lv-stack"></div>
+        <p class="lv-field-hint" id="ambientesHint" hidden>Inclua ao menos os ambientes obrigatórios: Quartos, Banheiros e Sala.</p>
+        <div class="lv-actions">
+          <button type="button" class="lv-btn lv-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="lv-btn lv-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 3 · Dimensionamento -->
+      <section class="lv-panel" data-step="3" id="step-dimensionamento" hidden>
+        <header class="lv-panel-head">
+          <p class="eyebrow">Etapa 03</p>
+          <h2>Dimensionamento</h2>
+          <p>Informe a potência e a distância de cada categoria de circuito. O dimensionamento usa o mesmo motor de cálculo da calculadora.</p>
+        </header>
+        <div id="dimensionamentoRoot" class="lv-stack"></div>
+        <div id="advancedRoot" class="lv-stack"></div>
+        <p class="lv-field-hint" id="dimensionamentoHint" hidden>Informe potência e distância de ao menos um circuito para dimensionar.</p>
+        <div class="lv-actions">
+          <button type="button" class="lv-btn lv-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="lv-btn lv-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 4 · Resumo -->
+      <section class="lv-panel" data-step="4" id="step-resumo" hidden>
+        <header class="lv-panel-head">
+          <p class="eyebrow">Etapa 04</p>
+          <h2>Resumo do levantamento</h2>
+          <p>Totais dos pontos e dimensionamento dos circuitos calculados pelo motor de cálculo.</p>
+        </header>
+        <div class="lv-summary-grid" id="resumoGrid"></div>
+        <div class="lv-stack lv-stack-offset" id="circuitosResumoRoot"></div>
+        <div class="lv-actions">
+          <button type="button" class="lv-btn lv-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="lv-btn lv-btn-primary" data-nav="next">Continuar <b>→</b></button>
+        </div>
+      </section>
+
+      <!-- 5 · Final -->
+      <section class="lv-panel" data-step="5" id="step-final" hidden>
+        <header class="lv-panel-head">
+          <p class="eyebrow">Etapa 05</p>
+          <h2>Finalizar levantamento</h2>
+          <p>Revise o memorial com os pontos e o dimensionamento dos circuitos e gere o documento técnico.</p>
+        </header>
+        <div class="lv-final" id="finalRoot"></div>
+        <div class="lv-doc" id="docChoice">
+          <header class="lv-doc-head">
+            <span>Gerar documento</span>
+            <p>Escolha o conteúdo do PDF a ser gerado. A lista de materiais é opcional.</p>
+          </header>
+          <div class="lv-doc-options" role="radiogroup" aria-label="Conteúdo do documento">
+            <button type="button" class="lv-doc-option is-active" data-doc="survey" role="radio" aria-checked="true">
+              <span class="lv-doc-radio" aria-hidden="true"></span>
+              <span class="lv-doc-copy">
+                <strong>Levantamento</strong>
+                <span>Memorial com os dados coletados na obra.</span>
+              </span>
+            </button>
+            <button type="button" class="lv-doc-option" data-doc="materials" role="radio" aria-checked="false">
+              <span class="lv-doc-radio" aria-hidden="true"></span>
+              <span class="lv-doc-copy">
+                <strong>Levantamento + Materiais</strong>
+                <span>Inclui a lista de materiais relacionada ao levantamento.</span>
+              </span>
+            </button>
+          </div>
+          <div class="lv-materials-preview" id="materialsPreview" hidden></div>
+          <p class="lv-field-hint" id="materialsHint" hidden>Não foi possível carregar o catálogo de materiais. Verifique a conexão e tente novamente.</p>
+        </div>
+        <div class="lv-actions lv-actions-final">
+          <button type="button" class="lv-btn lv-btn-ghost" data-nav="back">Voltar</button>
+          <button type="button" class="lv-btn lv-btn-primary" id="btnPdf">
+            <span class="lv-btn-label">Finalizar levantamento</span>
+            <b>↓ PDF</b>
+          </button>
+        </div>
+        <p class="lv-pdf-status" id="pdfStatus" role="status" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="lv-footer shell">
+    <span>DimenVolt Studio · Levantamento elétrico</span>
+    <a href="/">Voltar à landing</a>
+  </footer>
+
+  <script src="/src/frontend/scripts/motor_calculo.js"></script>
+  <script src="/src/reports/pdfGenerator.js"></script>
+  <script src="/src/reports/pdf-report.js"></script>
+  <script src="/src/frontend/scripts/materials-service.js"></script>
+  <script src="/src/frontend/scripts/levantamento.js"></script>
+</body>
+</html>

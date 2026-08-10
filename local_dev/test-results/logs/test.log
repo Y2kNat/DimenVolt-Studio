@@ -1,0 +1,48 @@
+[2026-08-10T01:42:04.668Z] [01] [calc-condutores] [Ligação fase-neutro: fase, neutro e PE com a mesma seção] [pass] 99ms
+[2026-08-10T01:42:04.684Z] [01] [calc-condutores] [Ligação fase-fase: dois condutores de fase e neutro não aplicável] [pass] 1ms
+[2026-08-10T01:42:04.691Z] [01] [calc-condutores] [Ligação trifásica: três condutores de fase] [pass] 0ms
+[2026-08-10T01:42:04.699Z] [01] [calc-condutores] [PE de seções acima de 16 mm² segue a regra da metade] [pass] 1ms
+[2026-08-10T01:42:04.708Z] [01] [calc-condutores] [Material alumínio reflete no texto dos condutores] [pass] 2ms
+[2026-08-10T01:42:04.715Z] [01] [calc-dimensionamento] [Circuito TUG 4.400 W em 220 V monofásico (10 m)] [pass] 0ms
+[2026-08-10T01:42:04.725Z] [01] [calc-dimensionamento] [Circuito TUE 5.500 W em 220 V com trecho longo (60 m)] [pass] 2ms
+[2026-08-10T01:42:04.732Z] [01] [calc-dimensionamento] [Circuito TUE (Forno) 6.600 W em 220 V (5 m)] [pass] 0ms
+[2026-08-10T01:42:04.740Z] [01] [calc-dimensionamento] [Circuito trifásico 9.000 W em 380 V] [pass] 0ms
+[2026-08-10T01:42:04.748Z] [01] [calc-dimensionamento] [Preferência de margem altera a seção selecionada] [pass] 0ms
+[2026-08-10T01:42:04.759Z] [01] [calc-disjuntores] [Coordenação do disjuntor: In ≥ Ib e In ≤ Iz] [pass] 4ms
+[2026-08-10T01:42:04.767Z] [01] [calc-disjuntores] [Disjuntor 32 A para corrente de 30 A] [pass] 0ms
+[2026-08-10T01:42:04.776Z] [01] [calc-disjuntores] [Disjuntor mínimo de 6 A para cargas pequenas] [pass] 1ms
+[2026-08-10T01:42:04.803Z] [01] [calc-disjuntores] [Carga pesada de 15.000 W exige disjuntor de 80 A] [pass] 1ms
+[2026-08-10T01:42:04.811Z] [01] [calc-protecoes] [Rejeita cargas e comprimentos inválidos] [pass] 1ms
+[2026-08-10T01:42:04.819Z] [01] [calc-protecoes] [Temperatura de 50 °C aplica fator 0,71 e eleva a seção] [pass] 0ms
+[2026-08-10T01:42:04.827Z] [01] [calc-protecoes] [Quatro circuitos agrupados aplicam fator 0,65] [pass] 0ms
+[2026-08-10T01:42:04.834Z] [01] [calc-protecoes] [Quatro condutores carregados aplicam fator de 0,95] [pass] 1ms
+[2026-08-10T01:42:04.841Z] [01] [calc-protecoes] [Status e classes de segurança do dimensionamento] [pass] 0ms
+[2026-08-10T01:42:04.848Z] [01] [calc-queda-tensao] [Trecho longo força aumento de seção por queda de tensão] [pass] 0ms
+[2026-08-10T01:42:04.856Z] [01] [calc-queda-tensao] [Dobrar o comprimento dobra a queda de tensão] [pass] 1ms
+[2026-08-10T01:42:04.864Z] [01] [calc-queda-tensao] [Percentual de queda é a queda em volts sobre a tensão] [pass] 0ms
+[2026-08-10T01:42:04.871Z] [01] [calc-queda-tensao] [Limite de queda de tensão mais rígido exige seção maior] [pass] 0ms
+[2026-08-10T01:42:07.152Z] [02] [lev-ambientes] [Ambientes obrigatórios sempre ativos e opcionais desativados] [pass] 2274ms
+[2026-08-10T01:42:08.742Z] [02] [lev-ambientes] [Ativar e desativar um ambiente opcional] [pass] 1583ms
+[2026-08-10T01:42:10.196Z] [02] [lev-ambientes] [Quantidade de unidades do ambiente] [pass] 1447ms
+[2026-08-10T01:42:11.685Z] [02] [lev-ambientes] [Adicionar e remover pontos por tipo] [pass] 1483ms
+[2026-08-10T01:42:13.453Z] [02] [lev-dimensionamento] [Circuitos pré-populados com potências agrupadas] [pass] 1761ms
+[2026-08-10T01:42:15.065Z] [02] [lev-dimensionamento] [Todas as potências necessárias somadas em seus circuitos] [pass] 1605ms
+[2026-08-10T01:42:17.032Z] [02] [lev-dimensionamento] [Motor de cálculo retorna seção por circuito] [pass] 1961ms
+[2026-08-10T01:42:27.662Z] [02] [lev-fluxo] [Fluxo completo do levantamento com geração de PDF] [pass] 10623ms
+[2026-08-10T01:42:29.279Z] [02] [lev-pontos] [Totais de potência por tipo de ponto] [pass] 1609ms
+[2026-08-10T01:42:30.893Z] [02] [lev-pontos] [Interruptores não somam potência] [pass] 1607ms
+[2026-08-10T01:42:32.110Z] [02] [lev-pontos] [Unidade sem pontos totaliza zero] [pass] 1210ms
+[2026-08-10T01:42:33.750Z] [02] [lev-pontos] [Ponto TUE com potência dedicada] [pass] 1634ms
+[2026-08-10T01:42:33.758Z] [01] [calc-golden] [Base de dados do motor carregada] [pass] 0ms
+[2026-08-10T01:42:33.766Z] [01] [calc-golden] [Paridade: TUG 4500W 220V FN 35m (golden)] [pass] 1ms
+[2026-08-10T01:42:33.775Z] [01] [calc-golden] [Motor 7.5 CV 380V trifásico 20m] [pass] 1ms
+[2026-08-10T01:42:33.783Z] [01] [calc-golden] [Trifásico 11kW 380V FP 0.85 (sem tabela de motor)] [pass] 0ms
+[2026-08-10T01:42:33.792Z] [01] [calc-golden] [Alimentador com múltiplas cargas (multi-tensão)] [pass] 1ms
+[2026-08-10T01:42:33.799Z] [01] [calc-golden] [Alta temperatura 50°C + agrupamento reduz seção disponível] [pass] 0ms
+[2026-08-10T01:42:33.807Z] [01] [calc-golden] [Casos de erro esperados validados] [pass] 1ms
+[2026-08-10T01:42:36.708Z] [03] [report-endpoints] [Relatório (calculadora) — payload válido gera PDF (200)] [pass] 2894ms
+[2026-08-10T01:42:36.724Z] [03] [report-endpoints] [Relatório (calculadora) — payload inválido responde 400 JSON] [pass] 8ms
+[2026-08-10T01:42:38.882Z] [03] [report-endpoints] [Levantamento — payload válido gera PDF (200)] [pass] 2152ms
+[2026-08-10T01:42:38.891Z] [03] [report-endpoints] [Levantamento — payload inválido responde 400 JSON] [pass] 2ms
+[2026-08-10T01:42:40.689Z] [03] [report-endpoints] [Quadro — payload válido gera PDF (200)] [pass] 1792ms
+[2026-08-10T01:42:40.697Z] [03] [report-endpoints] [Quadro — payload inválido responde 400 JSON] [pass] 2ms
