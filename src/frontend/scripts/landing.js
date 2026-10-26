@@ -72,15 +72,17 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   // Rede de segurança: se nada animar em 3,5s, libera o conteúdo.
   let safety = 0;
   let floatTween = null;
+  let introDone = false;
   try {
     if (prefersReducedMotion || !window.gsap) { showAll(); return; }
     safety = setTimeout(showAll, 3500);
     function startFloat() {
+      if (floatTween) { floatTween.kill(); floatTween = null; }
       floatTween = gsap.to('.dv-stage', { y: -8, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4 });
     }
     // Fora da hero (ou aba oculta) congela a flutuação; volta, retoma.
     window.addEventListener('dv-hero', (event) => {
-      if (event.detail.live) startFloat();
+      if (event.detail.live) { if (introDone) startFloat(); }
       else if (floatTween) { floatTween.kill(); floatTween = null; }
     });
     function play() {
@@ -91,6 +93,7 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
           clearTimeout(safety);
           root.classList.remove('js-hero');
           gsap.set(CLEAR, { clearProps: 'all' });
+          introDone = true;
           startFloat();
         },
       })
