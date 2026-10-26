@@ -28,6 +28,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
@@ -38,6 +39,7 @@
   <link rel="stylesheet" href="/src/frontend/styles/landing.css" />
 </head>
   <body>
+  <script>/* marca o modo de intro (congelado antes do primeiro paint) */document.documentElement.classList.add('js-hero');</script>
   <div class="grid-field" aria-hidden="true"></div>
   <div class="ambient" aria-hidden="true"></div>
 
@@ -314,6 +316,7 @@
     </div>
   </footer>
 
-  <script src="/src/frontend/scripts/landing.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script defer src="/src/frontend/scripts/landing.js"></script>
 </body>
 </html>

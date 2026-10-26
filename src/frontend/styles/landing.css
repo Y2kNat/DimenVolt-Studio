@@ -963,3 +963,30 @@ footer {
   .dv-brand span:last-child { font-size: 14px; }
   .dv-status { display: none; }
 }
+
+/* ===== Guarda de overflow horizontal =====
+   O bleed do .dv-stage (margin -90px) ultrapassa a viewport em larguras
+   ~861–1400px. `clip` não cria scroll container (não afeta sticky/fixed). */
+.dv-hero { overflow: clip; }
+
+/* ===== Intro GSAP =====
+   Estado inicial antes do primeiro paint: o inline-script no <body> adiciona
+   .js-hero, e o landing.js anima com GSAP e remove a classe no fim. Sem fill
+   nos seletores — se o JS/CDN falhar, o conteúdo volta ficando visível. */
+.js-hero .dv-nav,
+.js-hero .dv-h1,
+.js-hero .dv-sub,
+.js-hero .dv-cta,
+.js-hero .dv-stats,
+.js-hero .dv-bg i,
+.js-hero .dv-stage { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-hero .dv-nav,
+  .js-hero .dv-h1,
+  .js-hero .dv-sub,
+  .js-hero .dv-cta,
+  .js-hero .dv-stats,
+  .js-hero .dv-bg i,
+  .js-hero .dv-stage { opacity: 1 !important; }
+}

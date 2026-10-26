@@ -29,3 +29,55 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   }, { passive: true });
   update();
 })();
+
+// Intro do hero com GSAP: entrada em cascata (nav → copy → estágio) e
+// flutuação sutil contínua da janela. Sem GSAP (CDN fora) ou com
+// prefers-reduced-motion → remove o estado inicial e mostra tudo direto.
+(function () {
+  const root = document.documentElement;
+  if (!document.querySelector('.dv-stage')) return; // páginas sem hero v2
+  const SEL = '.dv-nav, .dv-h1, .dv-sub, .dv-cta, .dv-stats, .dv-bg i, .dv-stage';
+  const CLEAR = '.dv-nav, .dv-h1, .dv-sub, .dv-cta, .dv-stats, .dv-stage';
+  function showAll() {
+    root.classList.remove('js-hero');
+    document.querySelectorAll(SEL).forEach((el) => {
+      el.style.removeProperty('opacity');
+      el.style.removeProperty('transform');
+      el.style.removeProperty('visibility');
+    });
+  }
+  // Parâmetro de diagnóstico/screenshot: ?intro=off libera o conteúdo na hora.
+  if (new URLSearchParams(location.search).get('intro') === 'off') { showAll(); return; }
+  // Rede de segurança: se nada animar em 3,5s, libera o conteúdo.
+  let safety = 0;
+  try {
+    if (prefersReducedMotion || !window.gsap) { showAll(); return; }
+    safety = setTimeout(showAll, 3500);
+    function play() {
+      const ease = 'power3.out';
+      const speed = new URLSearchParams(location.search).get('intro') === 'speed' ? 12 : 1;
+      gsap.timeline({
+        onComplete: () => {
+          clearTimeout(safety);
+          root.classList.remove('js-hero');
+          gsap.set(CLEAR, { clearProps: 'all' });
+          gsap.to('.dv-stage', { y: -8, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4 });
+        },
+      })
+        .fromTo('.dv-nav', { y: -14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7, ease })
+        .fromTo('.dv-h1', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9, ease }, 0.08)
+        .fromTo('.dv-sub', { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9, ease }, 0.18)
+        .fromTo('.dv-cta', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9, ease }, 0.28)
+        .fromTo('.dv-stats', { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9, ease }, 0.36)
+        .fromTo('.dv-bg i', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.6, ease: 'power2.out', stagger: 0.12 }, 0.1)
+        .fromTo('.dv-stage', { y: 64, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.25, ease: 'power4.out' }, 0.32);
+      if (speed !== 1) tl.timeScale(speed);
+    }
+    // Espera curta pelas fontes (cap 600ms) para a animação não correr
+    // atrás do primeiro paint em conexões lentas.
+    Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 600))]).then(play);
+  } catch (err) {
+    clearTimeout(safety);
+    showAll();
+  }
+})();
