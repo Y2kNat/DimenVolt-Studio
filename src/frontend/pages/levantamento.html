@@ -16,6 +16,13 @@
 </head>
 <body>
   <div id="boot-black" aria-hidden="true"></div>
+  <script>
+    /* Segurança: se a animação CSS não rodar, a cortina é removida via JS em 1.2s. */
+    setTimeout(function () {
+      var b = document.getElementById('boot-black');
+      if (b) { b.style.display = 'none'; }
+    }, 1200);
+  </script>
   <div class="grid-field" aria-hidden="true"></div>
   <div class="ambient" aria-hidden="true"></div>
 
