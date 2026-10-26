@@ -51,6 +51,12 @@ app.get("/quadro/", (_req, res) => sendHtml(res, "quadro.html"));
 app.use(express.static(path.join(PROJECT_ROOT, "public")));
 app.use(express.static(PROJECT_ROOT));
 
+// Dev-only: em produção a Vercel serve o script real de Analytics na rota
+// reservada /_vercel/insights/script.js. Local não tem plataforma → shim vazio.
+app.get("/_vercel/insights/script.js", (_req, res) => {
+  res.type("application/javascript").send("/* Vercel Web Analytics shim (local dev) */");
+});
+
 app.use((req, res) => {
   res.status(404).send("Arquivo não encontrado");
 });
