@@ -386,8 +386,9 @@
   background: rgba(0, 0, 0, 0.25);
   color: var(--dim);
   font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -414,9 +415,9 @@
   padding: 0;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
@@ -680,12 +681,12 @@
 .result-label {
   display: block;
   margin-bottom: 10px;
-  color: var(--dim);
+  color: var(--muted);
   font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 .result-value {
@@ -929,10 +930,10 @@
   color: var(--muted);
   font-family: var(--mono);
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-align: left;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .data-table td {
