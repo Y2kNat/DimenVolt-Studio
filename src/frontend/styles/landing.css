@@ -641,6 +641,26 @@ footer {
 .dv-b2 { right: -18%; top: 14%; width: 72%; height: 28%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.08) 28%, transparent); }
 .dv-b3 { left: 28%; top: 36%; width: 70%; height: 18%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.048) 30%, transparent); }
 
+/* Background da hero animado (só CSS): os blobs "respiram" devagar usando as
+   propriedades individuais translate/scale — assim compõem com o transform
+   inline do parallax de scroll, sem sobrescrevê-lo.
+   A animação existe desde o load, mas fica em animation-play-state: paused;
+   o IntersectionObserver (landing.js) liga body.hero-live enquanto a hero
+   está em viewport — sai da hero, a animação congela (zero GPU/CPU); volta,
+   e ela retoma exatamente da fase em que parou, sem salto.
+   Prefers-reduced-motion: tokens.css força duration 1ms → estático. */
+@keyframes dv-drift-1 { to { translate: 2.4% -18px; scale: 1.045; } }
+@keyframes dv-drift-2 { to { translate: -2.6% 14px; scale: 1.06; } }
+@keyframes dv-drift-3 { to { translate: 1.8% -12px; scale: 1.04; } }
+
+.dv-b1 { animation: dv-drift-1 26s ease-in-out -7s infinite alternate; animation-play-state: paused; }
+.dv-b2 { animation: dv-drift-2 34s ease-in-out -19s infinite alternate; animation-play-state: paused; }
+.dv-b3 { animation: dv-drift-3 41s ease-in-out -3s infinite alternate; animation-play-state: paused; }
+
+body.hero-live .dv-b1,
+body.hero-live .dv-b2,
+body.hero-live .dv-b3 { animation-play-state: running; }
+
 .dv-hero-content {
   position: relative;
   z-index: 1;

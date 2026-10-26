@@ -30,6 +30,27 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   update();
 })();
 
+// Background da hero vivo: o IntersectionObserver manuten body.hero-live
+// enquanto a hero está em viewport (cf. regras .dv-b* em landing.css, que
+// pausam a animação CSS fora dela). Também avisa a intro para congelar a
+// flutuação GSAP do .dv-stage quando a hero não está visível.
+(function () {
+  const hero = document.querySelector('.dv-hero');
+  if (!hero || prefersReducedMotion || !('IntersectionObserver' in window)) return;
+  let inView = true;
+  function apply() {
+    const live = inView && !document.hidden;
+    document.body.classList.toggle('hero-live', live);
+    window.dispatchEvent(new CustomEvent('dv-hero', { detail: { live: live } }));
+  }
+  new IntersectionObserver((entries) => {
+    inView = entries.some((entry) => entry.isIntersecting);
+    apply();
+  }, { threshold: 0.08 }).observe(hero);
+  document.addEventListener('visibilitychange', apply);
+  apply();
+})();
+
 // Intro do hero com GSAP: entrada em cascata (nav → copy → estágio) e
 // flutuação sutil contínua da janela. Sem GSAP (CDN fora) ou com
 // prefers-reduced-motion → remove o estado inicial e mostra tudo direto.
@@ -50,18 +71,27 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   if (new URLSearchParams(location.search).get('intro') === 'off') { showAll(); return; }
   // Rede de segurança: se nada animar em 3,5s, libera o conteúdo.
   let safety = 0;
+  let floatTween = null;
   try {
     if (prefersReducedMotion || !window.gsap) { showAll(); return; }
     safety = setTimeout(showAll, 3500);
+    function startFloat() {
+      floatTween = gsap.to('.dv-stage', { y: -8, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4 });
+    }
+    // Fora da hero (ou aba oculta) congela a flutuação; volta, retoma.
+    window.addEventListener('dv-hero', (event) => {
+      if (event.detail.live) startFloat();
+      else if (floatTween) { floatTween.kill(); floatTween = null; }
+    });
     function play() {
       const ease = 'power3.out';
       const speed = new URLSearchParams(location.search).get('intro') === 'speed' ? 12 : 1;
-      gsap.timeline({
+      const tl = gsap.timeline({
         onComplete: () => {
           clearTimeout(safety);
           root.classList.remove('js-hero');
           gsap.set(CLEAR, { clearProps: 'all' });
-          gsap.to('.dv-stage', { y: -8, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4 });
+          startFloat();
         },
       })
         .fromTo('.dv-nav', { y: -14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7, ease })
