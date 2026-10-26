@@ -1417,3 +1417,18 @@
   .lv-adv-row { flex-wrap: wrap; }
   .lv-advanced > header { flex-wrap: wrap; }
 }
+
+/* Boot: tela preta de 0,5s → aparece. Só CSS (animação roda sem JS);
+   o conteúdo da página fica atrás da cortina desde o primeiro paint. */
+#boot-black {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050505;
+  animation: boot-black-out 0.18s ease-out 0.5s forwards;
+  pointer-events: none;
+}
+
+@keyframes boot-black-out {
+  to { opacity: 0; visibility: hidden; }
+}
