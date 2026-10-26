@@ -631,14 +631,15 @@ footer {
 .dv-bg i {
   position: absolute;
   display: block;
-  border-radius: 50%;
-  filter: blur(70px);
   will-change: transform;
 }
 
-.dv-b1 { left: -12%; top: 10%; width: 62%; height: 20%; background: oklch(1 0 0 / 0.09); }
-.dv-b2 { right: -18%; top: 14%; width: 72%; height: 28%; background: oklch(1 0 0 / 0.08); }
-.dv-b3 { left: 28%; top: 36%; width: 70%; height: 18%; background: var(--dv-accent-soft); opacity: 0.35; }
+/* Elipses chapadas com filter: blur deixavam as pontas visíveis no fundo
+   escuro (degrau vertical). Radial-gradient encerra em transparente por
+   construção — mesma pegada, borda sempre suave. */
+.dv-b1 { left: -12%; top: 10%; width: 62%; height: 20%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.09) 28%, transparent); }
+.dv-b2 { right: -18%; top: 14%; width: 72%; height: 28%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.08) 28%, transparent); }
+.dv-b3 { left: 28%; top: 36%; width: 70%; height: 18%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.048) 30%, transparent); }
 
 .dv-hero-content {
   position: relative;
@@ -966,8 +967,10 @@ footer {
 
 /* ===== Guarda de overflow horizontal =====
    O bleed do .dv-stage (margin -90px) ultrapassa a viewport em larguras
-   ~861–1400px. `clip` não cria scroll container (não afeta sticky/fixed). */
-.dv-hero { overflow: clip; }
+   ~861–1400px. NOTA: NÃO clipar no .dv-hero — ele también é .dv-wrap
+   (coluna de 1240px) e cortaria o glow dos blobs. O guard vive no
+   html/body (overflow-x: clip/hidden em tokens.css), que clipa só na
+   scrollport, sem afetar a pintura do fundo. */
 
 /* ===== Intro GSAP =====
    Estado inicial antes do primeiro paint: o inline-script no <body> adiciona
