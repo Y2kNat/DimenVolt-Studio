@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DimenVolt Studio</title>
+<meta name="description" content="Plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+<style>
+  /* ===== DimenVolt hero (ArcSuite-style parallax) ===== */
+  :root {
+    --dv-bg: oklch(0.12 0.003 286);
+    --dv-text: oklch(0.96 0.003 286);
+    --dv-muted: oklch(0.7 0.01 286);
+    --dv-line: oklch(1 0 0 / 0.1);
+    --dv-panel: oklch(0.17 0.012 265);
+    --dv-accent: oklch(0.85 0.17 95);
+    --dv-accent-soft: oklch(0.85 0.17 95 / 0.18);
+    --dv-ok: oklch(0.78 0.17 150);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  .dv { position: relative; min-height: 100vh; overflow: hidden; background: var(--dv-bg); color: var(--dv-text); font-family: "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .dv-bg { position: absolute; inset: 0; pointer-events: none; }
+  .dv-bg i { position: absolute; display: block; border-radius: 50%; filter: blur(70px); will-change: transform; }
+  .dv-b1 { left: -12%; top: 10%; width: 62%; height: 20%; background: oklch(1 0 0 / 0.09); }
+  .dv-b2 { right: -18%; top: 14%; width: 72%; height: 28%; background: oklch(1 0 0 / 0.08); }
+  .dv-b3 { left: 28%; top: 36%; width: 70%; height: 18%; background: var(--dv-accent-soft); opacity: .35; }
+  .dv-wrap { position: relative; max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+  .dv-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 92px; }
+  .dv-brand { display: flex; align-items: center; gap: 10px; font-size: 16px; }
+  .dv-brand b { font-weight: 600; }
+  .dv-mark { width: 24px; height: 24px; border-radius: 7px; background: conic-gradient(from 20deg, var(--dv-accent), oklch(0.7 0.15 60), var(--dv-accent)); box-shadow: 0 0 14px var(--dv-accent-soft); }
+  .dv-links { display: flex; gap: 32px; font-size: 15px; font-weight: 500; }
+  .dv-links a:hover { opacity: .75; }
+  .dv-right { justify-self: end; display: flex; gap: 20px; align-items: center; font-size: 15px; font-weight: 500; }
+  .dv-pill { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 999px; background: linear-gradient(oklch(0.18 0.01 265), oklch(0.13 0.008 265)); border: 1px solid oklch(1 0 0 / 0.13); transition: border-color .2s; }
+  .dv-pill:hover, .dv-btn:hover { border-color: oklch(1 0 0 / 0.3); }
+  .dv-hero { padding-top: 76px; }
+  .dv-h1 { font-size: clamp(42px, 5.9vw, 74px); line-height: 1; font-weight: 500; letter-spacing: -0.058em; max-width: 790px; }
+  .dv-arc { background: linear-gradient(90deg, oklch(0.55 0.005 286), oklch(0.86 0.005 286) 70%, var(--dv-text)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .dv-sub { margin-top: 38px; max-width: 730px; font-size: 18px; line-height: 1.55; color: var(--dv-muted); }
+  .dv-cta { margin-top: 36px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .dv-btn { display: inline-flex; align-items: center; gap: 22px; height: 52px; padding: 0 12px 0 18px; border-radius: 999px; font-size: 17px; font-weight: 500; background: linear-gradient(oklch(0.2 0.004 286), oklch(0.14 0.003 286)); border: 1px solid oklch(1 0 0 / 0.15); box-shadow: 0 0 28px oklch(1 0 0 / 0.06); transition: transform .2s, border-color .2s; }
+  .dv-btn:hover { transform: translateY(-1px); }
+  .dv-circ { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: oklch(0.22 0.005 286); border: 1px solid oklch(1 0 0 / 0.12); }
+  .dv-tag { font-size: 12px; padding: 3px 8px; border-radius: 6px; color: var(--dv-accent); background: var(--dv-accent-soft); border: 1px solid oklch(0.85 0.17 95 / 0.3); }
+  .dv-stats { margin-top: 36px; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; font-size: 15px; color: var(--dv-muted); }
+  .dv-dot { width: 4px; height: 4px; border-radius: 50%; background: oklch(0.42 0.005 286); }
+  .dv-stage { position: relative; margin: 0 -90px; padding: 38px 90px 0; height: 640px; overflow: hidden; perspective: 2600px; perspective-origin: 50% 0; -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent); mask-image: linear-gradient(to bottom, #000 58%, transparent); }
+  .dv-win { position: relative; max-width: 1180px; margin-left: -22px; transform-origin: 0 0; will-change: transform; background: linear-gradient(180deg, var(--dv-panel), oklch(0.13 0.01 265)); border: 1px solid oklch(1 0 0 / 0.13); border-radius: 17px; overflow: hidden; box-shadow: 0 50px 140px oklch(0 0 0 / 0.7), 0 0 60px var(--dv-accent-soft); }
+  .dv-win::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, oklch(1 0 0 / 0.045), transparent 38%); }
+  .dv-bar { position: relative; display: flex; justify-content: center; align-items: center; height: 40px; background: oklch(0.2 0.01 265); border-bottom: 1px solid var(--dv-line); font-size: 12px; letter-spacing: .08em; color: var(--dv-muted); }
+  .dv-lights { position: absolute; left: 16px; display: flex; gap: 8px; }
+  .dv-lights b { width: 10px; height: 10px; border-radius: 50%; background: oklch(0.4 0.01 265); }
+  .dv-lights b:first-child { background: var(--dv-accent); }
+  .dv-status { position: absolute; right: 18px; color: var(--dv-ok); }
+  .dv-body { display: grid; grid-template-columns: 260px 1fr; min-height: 700px; }
+  .dv-side { border-right: 1px solid var(--dv-line); padding: 18px 0; }
+  .dv-lbl { padding: 0 20px; font-size: 11px; letter-spacing: .08em; color: var(--dv-muted); margin: 6px 0; }
+  .dv-row { display: flex; align-items: center; height: 40px; padding: 0 20px; font-size: 14px; color: oklch(0.85 0.005 286); }
+  .dv-row.on { background: oklch(1 0 0 / 0.05); color: var(--dv-text); box-shadow: inset 2px 0 0 var(--dv-accent); }
+  .dv-sep { height: 1px; background: var(--dv-line); margin: 14px 0; }
+  .dv-proj { padding: 0 20px; font-size: 15px; font-weight: 500; }
+  .dv-main { padding: 24px 30px; }
+  .dv-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .dv-head h2 { margin-top: 6px; font-size: 29px; font-weight: 500; letter-spacing: -0.05em; }
+  .dv-grid { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dv-card { border: 1px solid var(--dv-line); border-radius: 12px; padding: 16px 18px; background: oklch(0 0 0 / 0.2); }
+  .dv-card strong { display: block; margin-top: 8px; font-size: 30px; font-weight: 500; letter-spacing: -0.04em; }
+  .dv-card small { font-size: 14px; color: var(--dv-muted); }
+  .dv-meter { margin-top: 14px; height: 6px; border-radius: 99px; background: oklch(1 0 0 / 0.08); overflow: hidden; }
+  .dv-meter i { display: block; height: 100%; width: 72%; background: var(--dv-accent); }
+  .dv-ok { color: var(--dv-ok); }
+  .dv-foot { display: flex; justify-content: space-between; margin-top: 18px; font-size: 12px; color: var(--dv-muted); letter-spacing: .06em; }
+  @media (max-width: 860px) {
+    .dv-links, .dv-right .dv-login { display: none; }
+    .dv-nav { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
+    .dv-hero { padding-top: 40px; }
+    .dv-body { grid-template-columns: 1fr; }
+    .dv-side { display: none; }
+    .dv-stage { margin: 0 -24px; padding: 30px 24px 0; }
+    .dv-win { margin-left: 0; }
+  }
+  @media (max-width: 560px) {
+    .dv-wrap { padding: 0 18px; }
+    .dv-nav { height: 72px; }
+    .dv-brand { min-width: 0; font-size: 15px; white-space: nowrap; }
+    .dv-mark { flex-shrink: 0; }
+    .dv-pill { height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
+    .dv-h1 { font-size: clamp(36px, 11vw, 48px); letter-spacing: -0.045em; }
+    .dv-sub { margin-top: 22px; font-size: 16px; }
+    .dv-cta { margin-top: 26px; flex-direction: column; align-items: stretch; gap: 12px; }
+    .dv-cta .dv-btn, .dv-cta .dv-pill { justify-content: space-between; height: 50px; }
+    .dv-stats { margin-top: 24px; gap: 10px; font-size: 13px; }
+    .dv-stage { margin: 0 -18px; padding: 24px 18px 0; height: 520px; perspective: 1400px; }
+    .dv-bar { font-size: 10px; justify-content: flex-start; padding-left: 64px; }
+    .dv-status { right: 12px; }
+    .dv-main { padding: 18px 16px; }
+    .dv-head { gap: 10px; }
+    .dv-head h2 { font-size: 22px; }
+    .dv-grid { gap: 10px; }
+    .dv-card { padding: 12px 14px; }
+    .dv-card strong { font-size: 24px; }
+    .dv-card small { font-size: 12px; }
+    .dv-foot { flex-direction: column; gap: 6px; }
+    .dv-body { min-height: 0; }
+  }
+  @media (max-width: 380px) {
+    .dv-brand span:last-child { font-size: 14px; }
+    .dv-status { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="dv">
+  <div class="dv-bg" aria-hidden="true">
+    <i id="b1" class="dv-b1"></i>
+    <i id="b2" class="dv-b2"></i>
+    <i id="b3" class="dv-b3"></i>
+  </div>
+
+  <header class="dv-wrap dv-nav">
+    <a class="dv-brand" href="#inicio">
+      <span class="dv-mark"></span>
+      <span><b>DimenVolt</b> Studio</span>
+    </a>
+    <nav class="dv-links">
+      <a href="#inicio">Início</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#tecnologia">Tecnologia</a>
+      <a href="#como-funciona">Fluxo</a>
+    </nav>
+    <div class="dv-right">
+      <a class="dv-login" href="/calculadora">Calculadora</a>
+      <a class="dv-pill" href="/levantamento">Levantamento ↗</a>
+    </div>
+  </header>
+
+  <main id="inicio" class="dv-wrap dv-hero">
+    <h1 class="dv-h1">
+      DimenVolt <span class="dv-arc">Studio</span>
+    </h1>
+    <p class="dv-sub">Plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410.</p>
+    <div class="dv-cta">
+      <a class="dv-btn" href="#modulos">
+        Explorar módulos <span class="dv-circ"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="dv-pill" href="/calculadora">
+        <span class="dv-tag">NBR 5410</span> Calculadora <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="dv-stats">
+      <span>Levantamento</span><i class="dv-dot"></i>
+      <span>Dimensionamento</span><i class="dv-dot"></i>
+      <span>Memorial em PDF</span>
+    </div>
+
+    <div class="dv-stage">
+      <div id="win" class="dv-win" aria-label="Prévia da plataforma">
+        <div class="dv-bar">
+          <div class="dv-lights"><b></b><b></b><b></b></div>
+          STUDIO / WORKBENCH
+          <span class="dv-status">● OPERACIONAL</span>
+        </div>
+        <div class="dv-body">
+          <aside class="dv-side">
+            <p class="dv-lbl">MÓDULOS</p>
+            <a class="dv-row on" href="/levantamento">Levantamento</a>
+            <a class="dv-row" href="/calculadora">Calculadora</a>
+            <a class="dv-row" href="/calculadora#cable-table">Tabelas NBR</a>
+            <div class="dv-sep"></div>
+            <p class="dv-lbl">PROJETO</p>
+            <p class="dv-proj">Residencial<br />Pinheiros</p>
+          </aside>
+          <div class="dv-main">
+            <div class="dv-head">
+              <div>
+                <p class="dv-lbl" style="padding: 0;">FLUXO TÉCNICO</p>
+                <h2>Do ambiente ao condutor</h2>
+              </div>
+              <span class="dv-tag">NBR 5410</span>
+            </div>
+            <div class="dv-grid">
+              <div class="dv-card">
+                <p class="dv-lbl" style="padding: 0;">PONTOS LEVANTADOS</p>
+                <strong>47 <small>un</small></strong>
+              </div>
+              <div class="dv-card">
+                <p class="dv-lbl" style="padding: 0;">POTÊNCIA ESTIMADA</p>
+                <strong>8,5 <small>kW</small></strong>
+              </div>
+            </div>
+            <div class="dv-card" style="margin-top: 14px;">
+              <p class="dv-lbl" style="padding: 0;">PRÓXIMA ETAPA</p>
+              <strong>Dimensionar</strong>
+              <small>Cabo · Disjuntor · Queda de tensão</small>
+              <div class="dv-meter"><i></i></div>
+              <p class="dv-sub" style="margin-top: 12px; font-size: 13px;">
+                Critérios aplicados <b>automáticos</b> › conforme NBR 5410
+              </p>
+            </div>
+            <div class="dv-card" style="margin-top: 14px;">
+              <p class="dv-lbl" style="padding: 0;">STATUS</p>
+              <strong class="dv-ok">Pronto ✓</strong>
+              <small>Memorial técnico disponível</small>
+            </div>
+            <div class="dv-foot">
+              <span>DimenVolt Studio · Engenharia com critério</span>
+              <span>GERAR PDF →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div style="height: 60vh;"></div>
+</div>
+
+<script>
+  (function () {
+    var win = document.getElementById("win");
+    var b1 = document.getElementById("b1");
+    var b2 = document.getElementById("b2");
+    var b3 = document.getElementById("b3");
+    var raf = 0;
+    function update() {
+      var y = window.scrollY;
+      var p = Math.min(y / 600, 1);
+      if (win) {
+        win.style.transform =
+          "translateY(" + (-y * 0.08) + "px) rotateX(" + (2.5 + p * 8) + "deg) rotateY(" + (-1 * (1 - p)) + "deg) skewX(" + (4.3 * (1 - p)) + "deg) rotate(" + (-1.5 * (1 - p)) + "deg)";
+      }
+      if (b1) b1.style.transform = "translateY(" + (y * 0.35) + "px) rotate(-12deg)";
+      if (b2) b2.style.transform = "translateY(" + (y * 0.2) + "px) rotate(-17deg)";
+      if (b3) b3.style.transform = "translateY(" + (y * 0.5) + "px) rotate(-9deg)";
+    }
+    window.addEventListener("scroll", function () {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  })();
+</script>
+</body>
+</html>

@@ -206,7 +206,7 @@ Em desenvolvimento, o `local_dev/server.js` expõe exatamente as mesmas três ro
 - `report-endpoint.js` — adapta os geradores ao contrato HTTP (`createPdfEndpoint`): cabeçalhos `Content-Type`/`Content-Disposition`, status 200 com o PDF e 400 para erros de validação. Usado tanto pelo `local_dev/server.js` quanto pelas functions da Vercel.
 - `pdf-report.js` — cliente que envia o payload para `/api/report/*`; quando a API não responde, reconstrói o relatório no navegador e abre a impressão (mesmos templates e validações).
 
-O navegador é iniciado de forma adaptativa em `pdfGenerator.js`: na Vercel (runtime serverless) usa `@sparticuz/chromium` + `puppeteer-core`; localmente usa o `puppeteer` com o Chromium baixado no `npm install`. A escolha é feita em runtime pela presença do ambiente Vercel/Lambda.
+O navegador é iniciado de forma adaptativa em `pdfGenerator.js`: na Vercel (runtime serverless) usa `@sparticuz/chromium` + `puppeteer-core`; localmente usa o `puppeteer`, que aponta por padrão para `PUPPETEER_EXECUTABLE_PATH` quando definido. A escolha é feita em runtime pela presença do ambiente Vercel/Lambda.
 
 ---
 
@@ -315,7 +315,9 @@ npm install
 npm start        # ou npm run dev
 ```
 
-O `npm start` executa `local_dev/server.js`: sobe o servidor local de desenvolvimento (Express) em `http://localhost:3000`, servindo as páginas e as mesmas rotas de API de PDF usadas em produção. O `npm install` baixa o Chromium usado pelo Puppeteer na geração local de PDF.
+O `npm start` executa `local_dev/server.js`: sobe o servidor local de desenvolvimento (Express) em `http://localhost:3000`, servindo as páginas e as mesmas rotas de API de PDF usadas em produção.
+
+O `.npmrc` do projeto configura `puppeteer_skip_download=true`: o Puppeteer **não** baixa o Chrome durante a instalação, o que mantém o `npm install` funcional em Termux/Android (sem build oficial do Chromium) e evita um download desnecessário na Vercel (que usa `@sparticuz/chromium`). Para gerar PDF localmente, aponte `PUPPETEER_EXECUTABLE_PATH` para um Chromium disponível no ambiente.
 
 | Rota           | Página                              |
 | -------------- | ----------------------------------- |

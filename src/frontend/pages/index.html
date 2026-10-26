@@ -41,100 +41,101 @@
   <div class="grid-field" aria-hidden="true"></div>
   <div class="ambient" aria-hidden="true"></div>
 
-  <header class="nav shell">
-    <a class="brand" href="#inicio" aria-label="DimenVolt Studio, início">
-      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span class="brand-copy">
-        <strong>DimenVolt</strong>Studio
-      </span>
+  <header class="dv-wrap dv-nav">
+    <a class="dv-brand" href="#inicio" aria-label="DimenVolt Studio, início">
+      <img class="dv-logo" src="/favicon.svg" alt="" width="24" height="24">
+      <span><b>DimenVolt</b> Studio</span>
     </a>
-    <nav aria-label="Navegação principal">
+    <nav class="dv-links" aria-label="Navegação principal">
       <a href="#inicio">Início</a>
       <a href="#recursos">Recursos</a>
       <a href="#tecnologia">Tecnologia</a>
       <a href="#como-funciona">Fluxo</a>
     </nav>
-    <div class="nav-actions">
-      <a class="nav-ghost" href="/calculadora">Calculadora</a>
-      <a class="nav-action" href="/levantamento">Levantamento <span aria-hidden="true">↗</span></a>
+    <div class="dv-right">
+      <a class="dv-login" href="/calculadora">Calculadora</a>
+      <a class="dv-pill" href="/levantamento">Levantamento <span aria-hidden="true">↗</span></a>
     </div>
   </header>
 
   <main>
-    <section id="inicio" class="hero shell">
-      <div class="hero-copy reveal">
-        <h1 class="t-stagger">
-          <span class="t-stagger-line">DimenVolt</span>
-          <span class="t-stagger-line muted">Studio</span>
-        </h1>
-        <p class="lede">Plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410.</p>
-        <div class="hero-actions">
-          <a class="button primary t-learn" href="#modulos">
-            Explorar módulos
-            <span class="t-learn-chevron" aria-hidden="true">
-              <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </a>
-        </div>
-        <div class="trust">
-        </div>
+    <section id="inicio" class="dv-hero dv-wrap">
+      <div class="dv-bg" aria-hidden="true">
+        <i id="dv-b1" class="dv-b1"></i>
+        <i id="dv-b2" class="dv-b2"></i>
+        <i id="dv-b3" class="dv-b3"></i>
       </div>
 
-      <div class="product-preview reveal" aria-label="Prévia da plataforma">
-        <div class="preview-top">
-          <div class="window-dots"><i></i><i></i><i></i></div>
-          <span>STUDIO / WORKBENCH</span>
-          <span class="status">● OPERACIONAL</span>
+      <div class="dv-hero-content">
+        <h1 class="dv-h1">
+          DimenVolt <span class="dv-arc">Studio</span>
+        </h1>
+        <p class="dv-sub">Plataforma inteligente para projetos elétricos, levantamento de instalações e dimensionamento conforme NBR 5410.</p>
+        <div class="dv-cta">
+          <a class="dv-btn" href="#modulos">
+            Explorar módulos <span class="dv-circ"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
         </div>
-        <div class="circuit-line" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="preview-body">
-          <aside>
-            <p>MÓDULOS</p>
-            <a class="module-link active" href="/levantamento"><span>Levantamento</span></a>
-            <a class="module-link" href="/calculadora"><span>Calculadora</span></a>
-            <a class="module-link" href="/calculadora#cable-table"><span>Tabelas NBR</span></a>
-            <hr>
-            <p>PROJETO</p>
-            <strong>Residencial<br>Pinheiros</strong>
-          </aside>
-          <div class="analysis">
-            <div class="analysis-heading">
-              <div>
-                <p>FLUXO TÉCNICO</p>
-                <h2>Do ambiente ao condutor</h2>
-              </div>
-              <span>NBR 5410</span>
+        <div class="dv-stats">
+          <span>Levantamento</span><i class="dv-dot" aria-hidden="true"></i>
+          <span>Dimensionamento</span><i class="dv-dot" aria-hidden="true"></i>
+          <span>Memorial em PDF</span>
+        </div>
+
+        <div class="dv-stage">
+          <div id="dv-win" class="dv-win" aria-label="Prévia da plataforma">
+            <div class="dv-bar">
+              <div class="dv-lights" aria-hidden="true"><b></b><b></b><b></b></div>
+              STUDIO / WORKBENCH
+              <span class="dv-status">● OPERACIONAL</span>
             </div>
-            <div class="metric-grid">
-              <div>
-                <p>PONTOS LEVANTADOS</p>
-                <strong>47 <small>un</small></strong>
+            <div class="dv-body">
+              <aside class="dv-side">
+                <p class="dv-lbl">MÓDULOS</p>
+                <a class="dv-row on" href="/levantamento">Levantamento</a>
+                <a class="dv-row" href="/calculadora">Calculadora</a>
+                <a class="dv-row" href="/calculadora#cable-table">Tabelas NBR</a>
+                <div class="dv-sep"></div>
+                <p class="dv-lbl">PROJETO</p>
+                <p class="dv-proj">Residencial<br>Pinheiros</p>
+              </aside>
+              <div class="dv-main">
+                <div class="dv-head">
+                  <div>
+                    <p class="dv-lbl">FLUXO TÉCNICO</p>
+                    <h2>Do ambiente ao condutor</h2>
+                  </div>
+                  <span class="dv-tag">NBR 5410</span>
+                </div>
+                <div class="dv-grid">
+                  <div class="dv-card">
+                    <p class="dv-lbl">PONTOS LEVANTADOS</p>
+                    <strong>47 <small>un</small></strong>
+                  </div>
+                  <div class="dv-card">
+                    <p class="dv-lbl">POTÊNCIA ESTIMADA</p>
+                    <strong>8,5 <small>kW</small></strong>
+                  </div>
+                </div>
+                <div class="dv-card">
+                  <p class="dv-lbl">PRÓXIMA ETAPA</p>
+                  <strong>Dimensionar</strong>
+                  <small>Cabo · Disjuntor · Queda de tensão</small>
+                  <div class="dv-meter"><i></i></div>
+                  <p class="dv-sub">Critérios aplicados <b>automáticos</b> › conforme NBR 5410</p>
+                </div>
+                <div class="dv-card">
+                  <p class="dv-lbl">STATUS</p>
+                  <strong class="dv-ok">Pronto ✓</strong>
+                  <small>Memorial técnico disponível</small>
+                </div>
+                <div class="dv-foot">
+                  <span>DimenVolt Studio · Engenharia com critério</span>
+                  <span>GERAR PDF →</span>
+                </div>
               </div>
-              <div>
-                <p>POTÊNCIA ESTIMADA</p>
-                <strong>8,5 <small>kW</small></strong>
-              </div>
-            </div>
-            <div class="result-card">
-              <span class="result-label">PRÓXIMA ETAPA</span>
-              <div>
-                <strong>Dimensionar</strong>
-                <span>Cabo · Disjuntor · Queda de tensão</span>
-              </div>
-              <div class="bar"><i></i></div>
-              <p>Critérios aplicados <b>automáticos</b> <span>›</span> conforme NBR 5410</p>
-            </div>
-            <div class="recommendation">
-              <span>STATUS</span>
-              <strong>Pronto</strong>
-              <p>Memorial técnico disponível</p>
-              <b>✓</b>
             </div>
           </div>
-        </div>
-        <div class="preview-footer">
-          <span>DimenVolt Studio · Engenharia com critério</span>
-          <span>GERAR PDF →</span>
         </div>
       </div>
     </section>
