@@ -39,7 +39,7 @@ async function gotoStep3(h, page, opts) {
     }
   }
   await clickNav(page, "next");
-  await h.awaitSelector(page, "#step-dimensionamento .lv-circuit");
+  await h.awaitSelector(page, "#step-dimensionamento .lv-circuit-type-card");
 }
 
 async function readValue(page, selector) {

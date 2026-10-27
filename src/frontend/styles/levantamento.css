@@ -1312,9 +1312,119 @@
   .lv-room-head { flex-wrap: wrap; }
 }
 
-/* ---------- Dimensionamento (etapa 3) ---------- */
+/* ---------- Dimensionamento por tipo de circuito (etapa 3) ---------- */
 
 .lv-stack-offset { margin-top: 14px; }
+
+.lv-circuit-type-card {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: linear-gradient(160deg, rgba(244, 244, 241, 0.05), rgba(244, 244, 241, 0.015));
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.lv-circuit-type-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  user-select: none;
+}
+
+.lv-circuit-type-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lv-circuit-type-title strong {
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.lv-circuit-type-title .lv-badge {
+  font-size: 9px;
+  padding: 2px 6px;
+}
+
+.lv-toggle-type {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line);
+  background: rgba(244, 244, 241, 0.04);
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-smooth-out), color var(--duration-fast) var(--ease-smooth-out);
+}
+
+.lv-toggle-type:hover {
+  background: rgba(244, 244, 241, 0.1);
+  color: var(--ink);
+}
+
+.lv-circuit-type-body {
+  padding: 12px 14px 14px;
+}
+
+.lv-room-subcard {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: rgba(244, 244, 241, 0.025);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.lv-room-subcard:last-child { margin-bottom: 0; }
+
+.lv-room-subcard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.lv-room-subcard-head strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lv-room-subcard-head .lv-badge {
+  font-size: 9px;
+  padding: 2px 6px;
+}
+
+.lv-room-subcard-body {
+  padding: 10px 12px 12px;
+}
+
+.lv-room-subcard-body .lv-metrics {
+  margin-bottom: 8px;
+}
+
+.lv-room-subcard-body .lv-circuit-result .lv-kv dd {
+  font-size: 12px;
+}
+
+.lv-room-subcard-body .lv-circuit-result .lv-kv dd.is-safe { color: var(--ok); }
+.lv-room-subcard-body .lv-circuit-result .lv-kv dd.is-warn { color: var(--warn); }
+
+.lv-room-subcard-body .lv-circuit-meta {
+  font-size: 11px;
+  color: var(--dim);
+}
 
 .lv-circuit-note {
   margin: 0;

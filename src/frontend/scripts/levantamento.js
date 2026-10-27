@@ -48,8 +48,19 @@
       interruptores: 0,
       comprimento: 0,
       largura: 0,
-      altura: 2.7
+      altura: 2.7,
+      dimensionamento: {
+        tug: { distancia: 0, result: null, error: null },
+        iluminacao: { distancia: 0, result: null, error: null }
+      }
     };
+  }
+
+  function ensureTueDim(point) {
+    if (point.distancia === undefined) point.distancia = 0;
+    if (point.result === undefined) point.result = null;
+    if (point.error === undefined) point.error = null;
+    return point;
   }
 
   function unitTugCount(unit) {
@@ -104,7 +115,14 @@
     count = clampInt(count, 0, 40);
     var list = unit[type];
     if (!Array.isArray(list)) list = unit[type] = [];
-    while (list.length < count) list.push({ id: nextPointId(list), potencia: 0 });
+    while (list.length < count) {
+      var newId = nextPointId(list);
+      if (type === "tue") {
+        list.push({ id: newId, potencia: 0, distancia: 0, result: null, error: null });
+      } else {
+        list.push({ id: newId, potencia: 0 });
+      }
+    }
     while (list.length > count) list.pop();
   }
 
@@ -363,10 +381,120 @@
     return res;
   }
 
+  function dimensionUnit(unit, type, pointId) {
+    if (type === "tue") {
+      var point = (unit.tue || []).find(function (p) { return num(p.id) === num(pointId); });
+      if (!point) return null;
+      ensureTueDim(point);
+      point.result = null;
+      point.error = null;
+      var potencia = num(point.potencia);
+      var distancia = num(point.distancia);
+      if (potencia <= 0 || distancia <= 0) return null;
+      var tensao = voltageNumber();
+      var tipoLigacao = connectionForVoltage(tensao);
+      var mat = {
+        potencia: potencia,
+        tensao: tensao,
+        comprimento: distancia,
+        tipoLigacao: tipoLigacao,
+        tipoCircuito: type,
+        metodoInstalacao: "B1",
+        margem: "recommended",
+        material: "copper",
+        condicaoAmbiente: "normal",
+        circuitosAgrupados: activeCircuitCount(),
+        condutoresCarregados: loadedConductorsFor(tipoLigacao),
+        quedaTensaoMax: 4,
+        fatorPotencia: 0.92
+      };
+      var res = engine.dimensionar(mat);
+      if (!res || !res.ok) {
+        point.error = (res && res.error) || "Não foi possível dimensionar este circuito.";
+        return null;
+      }
+      point.result = res;
+      return res;
+    }
+    var dim = unit.dimensionamento[type];
+    dim.result = null;
+    dim.error = null;
+    if (!engine || typeof engine.dimensionar !== "function") {
+      dim.error = "Motor de cálculo indisponível.";
+      return null;
+    }
+    if (engine.isReady && !engine.isReady()) {
+      dim.error = "Bases de cálculo carregando… aguarde um instante.";
+      return null;
+    }
+    var potencia = num(unitPointPower(unit, type));
+    var distancia = num(dim.distancia);
+    if (potencia <= 0 || distancia <= 0) return null;
+    var tensao = voltageNumber();
+    var tipoLigacao = connectionForVoltage(tensao);
+    var mat = {
+      potencia: potencia,
+      tensao: tensao,
+      comprimento: distancia,
+      tipoLigacao: tipoLigacao,
+      tipoCircuito: type,
+      metodoInstalacao: "B1",
+      margem: "recommended",
+      material: "copper",
+      condicaoAmbiente: "normal",
+      circuitosAgrupados: activeCircuitCount(),
+      condutoresCarregados: loadedConductorsFor(tipoLigacao),
+      quedaTensaoMax: 4,
+      fatorPotencia: 0.92
+    };
+    var res = engine.dimensionar(mat);
+    if (!res || !res.ok) {
+      dim.error = (res && res.error) || "Não foi possível dimensionar este circuito.";
+      return null;
+    }
+    dim.result = res;
+    return res;
+  }
+
   function recomputeDimensioning() {
     CIRCUIT_DEFS.forEach(function (def) {
       dimensionCircuit(def.key);
     });
+    flattenUnits().forEach(function (item) {
+      var u = item.unit;
+      // TUG: single circuit
+      if (unitTugPower(u) > 0) dimensionUnit(u, "tug");
+      // TUE: per point
+      (u.tue || []).forEach(function (p) {
+        ensureTueDim(p);
+        if (num(p.potencia) > 0) dimensionUnit(u, "tue", p.id);
+      });
+      // Iluminação: single circuit
+      if (unitIluminacaoPower(u) > 0) dimensionUnit(u, "iluminacao");
+    });
+  }
+
+  function totalDesignCurrent() {
+    var total = 0;
+    flattenUnits().forEach(function (item) {
+      var u = item.unit;
+      // TUG
+      var tugRes = u.dimensionamento.tug.result;
+      if (tugRes && tugRes.ok && tugRes.ib) total += tugRes.ib;
+      // TUE: per point
+      (u.tue || []).forEach(function (p) {
+        ensureTueDim(p);
+        if (p.result && p.result.ok && p.result.ib) total += p.result.ib;
+      });
+      // Iluminação
+      var iluRes = u.dimensionamento.iluminacao.result;
+      if (iluRes && iluRes.ok && iluRes.ib) total += iluRes.ib;
+    });
+    return total;
+  }
+
+  function generalBreakerCurrent() {
+    return totalDesignCurrent() * 0.7;
   }
 
   function conductorCountFor(res) {
@@ -499,13 +627,25 @@
 
   function validateDimensionamento() {
     recomputeDimensioning();
-    var any = CIRCUIT_DEFS.some(function (def) {
-      var c = state.dimensionamento.circuits[def.key];
-      return c.result && c.result.ok;
+    var units = flattenUnits();
+    var any = units.some(function (item) {
+      return CIRCUIT_DEFS.some(function (def) {
+        var tipo = def.key;
+        var res = null;
+        if (tipo === "tue") {
+          res = (item.unit.tue || []).some(function (p) {
+            ensureTueDim(p);
+            return p.result && p.result.ok;
+          });
+          return res;
+        }
+        var dim = item.unit.dimensionamento[tipo];
+        return dim && dim.result && dim.result.ok;
+      });
     });
     if (!any) {
       showHint(els.dimensionamentoHint);
-      toast("Informe potência e distância de ao menos um circuito para dimensionar.", "error");
+      toast("Informe potência e distância de ao menos um circuito de ambiente para dimensionar.", "error");
       return false;
     }
     hideHint(els.dimensionamentoHint);
@@ -771,15 +911,123 @@
 
   function renderDimensionamento() {
     engineLoadPromise.then(function () {
-      prefillCircuitPowers();
       recomputeDimensioning();
-      els.dimensionamentoRoot.innerHTML = CIRCUIT_DEFS.map(circuitCardHtml).join("");
+      els.dimensionamentoRoot.innerHTML = circuitTypesDimensionamentoHtml();
       els.advancedRoot.innerHTML = advancedOptionsHtml();
     }).catch(function (err) {
       els.dimensionamentoRoot.innerHTML =
         '<p class="lv-session-note">' + escapeHtml((err && err.message) || "Motor de cálculo indisponível.") + "</p>";
       els.advancedRoot.innerHTML = "";
     });
+  }
+
+  function circuitTypesDimensionamentoHtml() {
+    var units = flattenUnits();
+    if (units.length === 0) {
+      return '<p class="lv-session-note">Nenhum ambiente ativo. Volte à etapa de ambientes para incluir ao menos os obrigatórios.</p>';
+    }
+    return CIRCUIT_DEFS.map(function (def) {
+      return circuitTypeCardHtml(def, units);
+    }).join("");
+  }
+
+  function circuitTypeCardHtml(def, units) {
+    var tipo = def.key;
+    // Collect circuits of this type
+    var circuits = [];
+    units.forEach(function (item, index) {
+      var u = item.unit;
+      if (tipo === "tue") {
+        // TUE: one circuit per point
+        (u.tue || []).forEach(function (p) {
+          ensureTueDim(p);
+          if (num(p.potencia) > 0) {
+            circuits.push({ item: item, index: index, point: p, potencia: num(p.potencia) });
+          }
+        });
+      } else {
+        // TUG / Iluminação: one circuit per room (summed)
+        var potencia = num(unitPointPower(u, tipo));
+        if (potencia > 0) {
+          circuits.push({ item: item, index: index, point: null, potencia: potencia });
+        }
+      }
+    });
+    if (circuits.length === 0) return '';
+
+    var totalPotencia = circuits.reduce(function (acc, c) { return acc + c.potencia; }, 0);
+
+    var html = '';
+    html += '<article class="lv-circuit-type-card" data-circuit-type="' + tipo + '">';
+    html += '<div class="lv-circuit-type-head" data-action="toggle-type">';
+    html += '<div class="lv-circuit-type-title">';
+    html += "<strong>" + escapeHtml(def.label) + "</strong>";
+    html += '<span class="lv-badge">' + escapeHtml(def.badge) + ' · ' + circuits.length + ' circuito(s) · ' + formatPower(totalPotencia) + '</span>';
+    html += '</div>';
+    html += '<button type="button" class="lv-toggle-type" data-action="toggle-type" aria-expanded="true" aria-label="Recolher ' + escapeHtml(def.label) + '">▲</button>';
+    html += '</div>';
+    html += '<div class="lv-circuit-type-body">';
+    circuits.forEach(function (c) {
+      var item = c.item;
+      var index = c.index;
+      var u = item.unit;
+      var res, distancia, dim;
+      if (tipo === "tue") {
+        var point = c.point;
+        ensureTueDim(point);
+        res = point.result;
+        distancia = num(point.distancia);
+        dim = point;
+      } else {
+        dim = u.dimensionamento[tipo];
+        res = dim.result;
+        distancia = num(dim.distancia);
+      }
+      var resultBox = '';
+      if (dim.error) {
+        resultBox = '<p class="lv-circuit-note is-error">' + escapeHtml(dim.error) + '</p>';
+      } else if (res && res.ok) {
+        var condutores = conductorCountFor(res);
+        var metragem = estimatedMetragem(res, distancia);
+        resultBox =
+          '<div class="lv-circuit-result">' +
+          '<dl class="lv-kv">' +
+          "<dt>Corrente (Ib)</dt><dd>" + res.ib.toFixed(2) + ' A</dd>' +
+          "<dt>Condutor (fase)</dt><dd>" + escapeHtml(res.texts.phase) + '</dd>' +
+          "<dt>Disjuntor</dt><dd>" + res.breaker + ' A</dd>' +
+          "<dt>Queda de tensão</dt><dd>" + res.dropPct.toFixed(2) + ' %</dd>' +
+          "<dt>Status</dt><dd class='" + (res.status.class === 'safe' ? 'is-safe' : 'is-warn') + "'>" + escapeHtml(res.status.text) + '</dd>' +
+          '</dl>' +
+          '<p class="lv-circuit-meta">Distância: ' + formatNumber(distancia, 1) + ' m · Metragem estimada: ' + formatNumber(metragem, 1) + ' m</p>' +
+          '</div>';
+      } else if (c.potencia > 0 && distancia <= 0) {
+        resultBox = '<p class="lv-circuit-note">Informe a distância para dimensionar este circuito.</p>';
+      } else {
+        resultBox = '<p class="lv-circuit-note">Informe a distância do circuito ' + def.label + ' para dimensionar.</p>';
+      }
+      var label = tipo === "tue"
+        ? (item.unitLabel + ' · ' + item.roomLabel + ' · ' + def.label + ' ' + c.point.id)
+        : (item.unitLabel + ' · ' + item.roomLabel);
+      html += '<div class="lv-room-subcard" data-dim-index="' + index + '" data-circuit-type="' + tipo + '"' + (tipo === "tue" ? ' data-point-id="' + c.point.id + '"' : '') + '>';
+      html += '<div class="lv-room-subcard-head">';
+      html += '<strong>' + escapeHtml(label) + '</strong>';
+      html += '<span class="lv-badge">' + formatPower(c.potencia) + '</span>';
+      html += '</div>';
+      html += '<div class="lv-room-subcard-body">';
+      html += '<div class="lv-metrics">';
+      if (tipo === "tue") {
+        html += '<div class="lv-metric"><label>Distância (m)</label><input type="number" inputmode="decimal" min="0" step="any" data-field="distancia" data-point-id="' + c.point.id + '" value="' + escapeHtml(String(c.point.distancia || 0)) + '" /></div>';
+      } else {
+        html += fieldHtml(tipo + ".distancia", "Distância (m)", dim.distancia);
+      }
+      html += '</div>';
+      html += '<div data-result="' + index + '-' + tipo + (tipo === "tue" ? '-' + c.point.id : '') + '">' + resultBox + '</div>';
+      html += '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    html += '</article>';
+    return html;
   }
 
   function prefillCircuitPowers() {
@@ -821,21 +1069,54 @@
       statHtml("Potência Iluminação", formatNumber(t.iluminacao.potencia, 0), "W") +
       statHtml("Potência total", formatNumber(t.potencia, 0), "W");
 
-    var blocks = CIRCUIT_DEFS.map(function (def) {
-      var c = state.dimensionamento.circuits[def.key];
-      var res = c.result;
-      var body =
-        '<dl class="lv-kv">' +
-          "<dt>Potência</dt><dd>" + formatPower(c.potencia) + "</dd>" +
-          "<dt>Distância</dt><dd>" + formatNumber(c.distancia, 1) + " m</dd>" +
-          (res && res.ok ? circuitKvHtml(res) : "<dt>Status</dt><dd>Não dimensionado</dd>") +
-        "</dl>";
-      return blockHtml(def.badge + " · " + def.label, body);
-    }).join("");
+    var units = flattenUnits();
+    var blocks = '';
+    CIRCUIT_DEFS.forEach(function (def) {
+      var tipo = def.key;
+      units.forEach(function (item) {
+        var u = item.unit;
+        if (tipo === "tue") {
+          // TUE: per point
+          (u.tue || []).forEach(function (p) {
+            ensureTueDim(p);
+            var potencia = num(p.potencia);
+            if (potencia <= 0) return;
+            var res = p.result;
+            var distancia = num(p.distancia);
+            var body =
+              '<dl class="lv-kv">' +
+                "<dt>Potência</dt><dd>" + formatPower(potencia) + "</dd>" +
+                "<dt>Distância</dt><dd>" + formatNumber(distancia, 1) + " m</dd>" +
+                (res && res.ok ? circuitKvHtml(res) : "<dt>Status</dt><dd>Não dimensionado</dd>") +
+              "</dl>";
+            blocks += blockHtml(item.unitLabel + " · " + item.roomLabel + " · " + def.label + " " + p.id, body);
+          });
+        } else {
+          // TUG / Iluminação: per room
+          var dim = u.dimensionamento[tipo];
+          var res = dim.result;
+          var distancia = num(dim.distancia);
+          var potencia = num(unitPointPower(u, tipo));
+          if (potencia <= 0) return;
+          var body =
+            '<dl class="lv-kv">' +
+              "<dt>Potência</dt><dd>" + formatPower(potencia) + "</dd>" +
+              "<dt>Distância</dt><dd>" + formatNumber(distancia, 1) + " m</dd>" +
+              (res && res.ok ? circuitKvHtml(res) : "<dt>Status</dt><dd>Não dimensionado</dd>") +
+            "</dl>";
+          blocks += blockHtml(item.unitLabel + " · " + item.roomLabel + " · " + def.label, body);
+        }
+      });
+    });
+    if (!blocks) blocks = '<p class="lv-session-note">Nenhum ambiente com dimensionamento.</p>';
 
-    blocks += blockHtml("Potência total dos circuitos",
+    var geralIb = totalDesignCurrent();
+    var geralCorrente = generalBreakerCurrent();
+    blocks += blockHtml("Disjuntor geral (fator de diversidade 0,7)",
       '<dl class="lv-kv">' +
-        "<dt>Total</dt><dd>" + formatPower(circuitTotalPower()) + "</dd>" +
+        "<dt>Soma Ib de todos os circuitos</dt><dd>" + geralIb.toFixed(2) + " A</dd>" +
+        "<dt>× 0,7 (diversidade)</dt><dd>" + geralCorrente.toFixed(2) + " A</dd>" +
+        "<dt>Disjuntor geral sugerido</dt><dd class='is-safe'>" + Math.ceil(geralCorrente) + " A</dd>" +
       "</dl>");
 
     els.circuitosResumoRoot.innerHTML = blocks;
@@ -926,20 +1207,59 @@
       );
     }).join("");
 
-    var circuitBlocks = CIRCUIT_DEFS.map(function (def) {
-      var c = state.dimensionamento.circuits[def.key];
-      var res = c.result;
-      var body =
-        '<dl class="lv-kv">' +
-          "<dt>Potência</dt><dd>" + formatPower(c.potencia) + "</dd>" +
-          "<dt>Distância</dt><dd>" + formatNumber(c.distancia, 1) + " m</dd>" +
-          (res && res.ok
-            ? circuitKvHtml(res) +
-              "<dt>Metragem estimada</dt><dd>" + formatNumber(estimatedMetragem(res, c.distancia), 1) + " m</dd>"
-            : "<dt>Status</dt><dd>Não dimensionado</dd>") +
-        "</dl>";
-      return blockHtml(def.badge + " · " + def.label, body);
-    }).join("");
+    var units = flattenUnits();
+    var circuitBlocks = '';
+    CIRCUIT_DEFS.forEach(function (def) {
+      var tipo = def.key;
+      units.forEach(function (item) {
+        var u = item.unit;
+        if (tipo === "tue") {
+          (u.tue || []).forEach(function (p) {
+            ensureTueDim(p);
+            var potencia = num(p.potencia);
+            if (potencia <= 0) return;
+            var res = p.result;
+            var distancia = num(p.distancia);
+            var body =
+              '<dl class="lv-kv">' +
+                "<dt>Potência</dt><dd>" + formatPower(potencia) + "</dd>" +
+                "<dt>Distância</dt><dd>" + formatNumber(distancia, 1) + " m</dd>" +
+                (res && res.ok
+                  ? circuitKvHtml(res) +
+                    "<dt>Metragem estimada</dt><dd>" + formatNumber(estimatedMetragem(res, distancia), 1) + " m</dd>"
+                  : "<dt>Status</dt><dd>Não dimensionado</dd>") +
+              "</dl>";
+            circuitBlocks += blockHtml(item.unitLabel + " · " + item.roomLabel + " · " + def.label + " " + p.id, body);
+          });
+        } else {
+          var dim = u.dimensionamento[tipo];
+          var res = dim.result;
+          var distancia = num(dim.distancia);
+          var potencia = num(unitPointPower(u, tipo));
+          if (potencia <= 0) return;
+          var body =
+            '<dl class="lv-kv">' +
+              "<dt>Potência</dt><dd>" + formatPower(potencia) + "</dd>" +
+              "<dt>Distância</dt><dd>" + formatNumber(distancia, 1) + " m</dd>" +
+              (res && res.ok
+                ? circuitKvHtml(res) +
+                  "<dt>Metragem estimada</dt><dd>" + formatNumber(estimatedMetragem(res, distancia), 1) + " m</dd>"
+                : "<dt>Status</dt><dd>Não dimensionado</dd>") +
+            "</dl>";
+          circuitBlocks += blockHtml(item.unitLabel + " · " + item.roomLabel + " · " + def.label, body);
+        }
+      });
+    });
+    if (!circuitBlocks) circuitBlocks = '<p class="lv-session-note">Nenhum ambiente com dimensionamento.</p>';
+
+    var geralIb = totalDesignCurrent();
+    var geralCorrente = generalBreakerCurrent();
+    var geralBlock = blockHtml("Disjuntor geral (fator de diversidade 0,7)",
+      '<dl class="lv-kv">' +
+        "<dt>Soma Ib dos ambientes</dt><dd>" + geralIb.toFixed(2) + " A</dd>" +
+        "<dt>× 0,7</dt><dd>" + geralCorrente.toFixed(2) + " A</dd>" +
+        "<dt>Disjuntor geral sugerido</dt><dd class='is-safe'>" + Math.ceil(geralCorrente) + " A</dd>" +
+      "</dl>");
 
     els.finalRoot.innerHTML =
       blockHtml("Cliente",
@@ -963,10 +1283,11 @@
             "</tr></thead><tbody>" + rowsPointsDetail + "</tbody></table></div>"
           : "")
       ) +
-      blockHtml("Dimensionamento dos circuitos",
+      blockHtml("Dimensionamento dos ambientes",
         circuitBlocks ||
-        '<p class="lv-session-note">Nenhum circuito foi dimensionado.</p>'
+        '<p class="lv-session-note">Nenhum ambiente foi dimensionado.</p>'
       ) +
+      geralBlock +
       (state.dimensionamento.dimsEnabled
         ? blockHtml("Dimensões dos ambientes",
             '<div class="lv-table-wrap"><table class="lv-table"><thead><tr>' +
@@ -1190,19 +1511,97 @@
     if (unitTotal) unitTotal.textContent = formatPower(unitPower(unit));
   }
 
+  els.dimensionamentoRoot.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-action='toggle-type']");
+    if (!btn) return;
+    var card = btn.closest(".lv-circuit-type-card");
+    if (!card) return;
+    var body = card.querySelector(".lv-circuit-type-body");
+    if (!body) return;
+    var expanded = !body.hidden;
+    body.hidden = expanded;
+    btn.setAttribute("aria-expanded", expanded ? "false" : "true");
+    btn.textContent = expanded ? "▼" : "▲";
+    btn.setAttribute("aria-label", expanded ? "Expandir " + card.querySelector("strong").textContent : "Recolher " + card.querySelector("strong").textContent);
+    card.classList.toggle("is-expanded", !expanded);
+  });
+
   els.dimensionamentoRoot.addEventListener("input", function (e) {
     var input = e.target.closest("input[data-field]");
     if (!input) return;
-    var article = input.closest("[data-circuit]");
-    if (!article) return;
-    var key = article.getAttribute("data-circuit");
-    var c = state.dimensionamento.circuits[key];
-    if (!c) return;
-    c[input.getAttribute("data-field")] = num(input.value);
-    var res = dimensionCircuit(key);
-    var box = article.querySelector("[data-result]");
-    if (box) box.innerHTML = circuitResultHtml(key, c, res);
+    var field = input.getAttribute("data-field");
+    var subCard = input.closest("[data-dim-index][data-circuit-type]");
+    if (!subCard) return;
+    var index = parseInt(subCard.getAttribute("data-dim-index"), 10);
+    var tipo = subCard.getAttribute("data-circuit-type");
+    var items = flattenUnits();
+    var item = items[index];
+    if (!item) return;
+    var pointId = input.getAttribute("data-point-id");
+    var res;
+    if (pointId) {
+      // TUE per-point
+      var point = (item.unit.tue || []).find(function (p) { return num(p.id) === num(pointId); });
+      if (!point) return;
+      ensureTueDim(point);
+      point.distancia = num(input.value);
+      res = dimensionUnit(item.unit, tipo, pointId);
+    } else {
+      // TUG / Iluminação per-room
+      var parts = field.split(".");
+      if (parts.length === 2) {
+        item.unit.dimensionamento[tipo].distancia = num(input.value);
+      } else {
+        item.unit.dimensionamento[tipo].distancia = num(input.value);
+      }
+      res = dimensionUnit(item.unit, tipo);
+    }
+    var resultKey = index + '-' + tipo + (pointId ? '-' + pointId : '');
+    var box = subCard.querySelector('[data-result="' + resultKey + '"]');
+    if (box) box.innerHTML = circuitResultHtmlForUnit(item.unit, tipo, res, pointId);
   });
+
+  function circuitResultHtmlForUnit(u, tipo, res, pointId) {
+    var dim, distancia, potencia, error;
+    if (tipo === "tue" && pointId) {
+      var point = (u.tue || []).find(function (p) { return num(p.id) === num(pointId); });
+      if (!point) return '';
+      ensureTueDim(point);
+      dim = point;
+      distancia = num(point.distancia);
+      potencia = num(point.potencia);
+      error = point.error;
+    } else {
+      dim = u.dimensionamento[tipo];
+      distancia = num(dim.distancia);
+      potencia = num(unitPointPower(u, tipo));
+      error = dim.error;
+    }
+    var def = CIRCUIT_DEFS.find(function (d) { return d.key === tipo; });
+    if (error) {
+      return '<p class="lv-circuit-note is-error">' + escapeHtml(error) + "</p>";
+    }
+    if (res && res.ok) {
+      var condutores = conductorCountFor(res);
+      var metragem = estimatedMetragem(res, distancia);
+      return (
+        '<div class="lv-circuit-result">' +
+        '<dl class="lv-kv">' +
+        "<dt>Corrente (Ib)</dt><dd>" + res.ib.toFixed(2) + ' A</dd>' +
+        "<dt>Condutor (fase)</dt><dd>" + escapeHtml(res.texts.phase) + '</dd>' +
+        "<dt>Disjuntor</dt><dd>" + res.breaker + ' A</dd>' +
+        "<dt>Queda de tensão</dt><dd>" + res.dropPct.toFixed(2) + ' %</dd>' +
+        "<dt>Status</dt><dd class='" + (res.status.class === 'safe' ? 'is-safe' : 'is-warn') + "'>" + escapeHtml(res.status.text) + '</dd>' +
+        '</dl>' +
+        '<p class="lv-circuit-meta">Distância: ' + formatNumber(distancia, 1) + ' m · Metragem estimada: ' + formatNumber(metragem, 1) + ' m</p>' +
+        '</div>'
+      );
+    }
+    if (potencia > 0 && distancia <= 0) {
+      return '<p class="lv-circuit-note">Informe a distância para dimensionar este circuito.</p>';
+    }
+    return '<p class="lv-circuit-note">Informe a distância do circuito ' + (def ? def.label : tipo) + ' para dimensionar.</p>';
+  }
 
   els.advancedRoot.addEventListener("click", function (e) {
     var btn = e.target.closest("[data-action]");
@@ -1319,8 +1718,64 @@
       },
       units: units.map(function (item) {
         var u = item.unit;
+        var dim = u.dimensionamento;
+        var circuitos = [];
+        CIRCUIT_DEFS.forEach(function (def) {
+          var tipo = def.key;
+          if (tipo === "tue") {
+            (u.tue || []).forEach(function (p) {
+              ensureTueDim(p);
+              var potencia = num(p.potencia);
+              if (potencia <= 0) return;
+              var res = p.result;
+              var distancia = num(p.distancia);
+              circuitos.push({
+                tipo: tipo,
+                label: def.label,
+                ponto: p.id,
+                potencia: potencia,
+                distancia: distancia,
+                resultado: res && res.ok ? {
+                  corrente: res.ib,
+                  disjuntor: res.breaker,
+                  secao: res.section,
+                  quedaTensao: res.dropPct,
+                  status: res.status.text,
+                  condutores: conductorCountFor(res),
+                  metragem: Math.round(conductorCountFor(res) * distancia * 10) / 10,
+                  motivo: res.reason
+                } : null,
+                erro: p.error || null
+              });
+            });
+          } else {
+            var d = dim[tipo];
+            var res = d.result;
+            var distancia = num(d.distancia);
+            var potencia = num(unitPointPower(u, tipo));
+            if (potencia <= 0) return;
+            circuitos.push({
+              tipo: tipo,
+              label: def.label,
+              potencia: potencia,
+              distancia: distancia,
+              resultado: res && res.ok ? {
+                corrente: res.ib,
+                disjuntor: res.breaker,
+                secao: res.section,
+                quedaTensao: res.dropPct,
+                status: res.status.text,
+                condutores: conductorCountFor(res),
+                metragem: Math.round(conductorCountFor(res) * distancia * 10) / 10,
+                motivo: res.reason
+              } : null,
+              erro: d.error || null
+            });
+          }
+        });
         return {
           label: item.unitLabel,
+          room: item.roomLabel,
           tug: (u.tug || []).map(function (p) {
             return { id: num(p.id), potencia: num(p.potencia) };
           }),
@@ -1334,7 +1789,8 @@
           potencia: unitPower(u),
           comprimento: num(u.comprimento),
           largura: num(u.largura),
-          altura: num(u.altura)
+          altura: num(u.altura),
+          circuitos: circuitos
         };
       }),
       totals: {
@@ -1349,6 +1805,12 @@
         perimetro: totals.perimetro
       },
       dimensoesAtivadas: state.dimensionamento.dimsEnabled,
+      disjuntorGeral: {
+        somaIb: totalDesignCurrent(),
+        fator: 0.7,
+        correnteAjustada: generalBreakerCurrent(),
+        disjuntorSugerido: Math.ceil(generalBreakerCurrent())
+      },
       circuits: CIRCUIT_DEFS.map(function (def) {
         var c = state.dimensionamento.circuits[def.key];
         var p = {

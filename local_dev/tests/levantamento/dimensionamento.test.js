@@ -12,11 +12,12 @@ module.exports = {
         const page = await lev.openLev(h);
         await lev.gotoStep3(h, page, { room: "quartos", tug: 120, ill: 60 });
 
-        const power = await page.$eval(
-          '[data-circuit="tug"] input[data-field="potencia"]',
-          (el) => el.value
+        // TUG circuit should show the power from the room's points
+        const tugPower = await page.$eval(
+          '[data-circuit-type="tug"] .lv-room-subcard[data-dim-index="0"] .lv-badge',
+          (el) => el.textContent
         );
-        h.equal(power, "120", "Circuito TUG recebe a potência agrupada do ambiente");
+        h.ok(tugPower.includes("120"), "Circuito TUG recebe a potência agrupada do ambiente: " + tugPower);
       },
     },
     {
@@ -25,10 +26,10 @@ module.exports = {
         const page = await lev.openLev(h);
         await lev.gotoStep3(h, page, { room: "quartos", tug: 100, ill: 60 });
 
-        const tug = await page.$eval('[data-circuit="tug"] input[data-field="potencia"]', (el) => el.value);
-        const ill = await page.$eval('[data-circuit="iluminacao"] input[data-field="potencia"]', (el) => el.value);
-        h.equal(tug, "100", "Circuito TUG com 100 W");
-        h.equal(ill, "60", "Circuito de iluminação com 60 W");
+        const tugBadge = await page.$eval('[data-circuit-type="tug"] .lv-room-subcard[data-dim-index="0"] .lv-badge', (el) => el.textContent);
+        const illBadge = await page.$eval('[data-circuit-type="iluminacao"] .lv-room-subcard[data-dim-index="0"] .lv-badge', (el) => el.textContent);
+        h.ok(tugBadge.includes("100"), "Circuito TUG com 100 W: " + tugBadge);
+        h.ok(illBadge.includes("60"), "Circuito de iluminação com 60 W: " + illBadge);
       },
     },
     {
@@ -37,19 +38,27 @@ module.exports = {
         const page = await lev.openLev(h);
         await lev.gotoStep3(h, page, { room: "quartos", tug: 200, ill: 60 });
 
-        for (const key of ["iluminacao", "tug", "tue"]) {
-          await h.fill(page, '[data-circuit="' + key + '"] input[data-field="potencia"]', "600");
-          await h.fill(page, '[data-circuit="' + key + '"] input[data-field="distancia"]', "20");
-          await page.waitForFunction(
-            (k) => {
-              const box = document.querySelector('[data-circuit="' + k + '"] [data-result]');
-              return !!(box && /mm²/.test(box.textContent));
-            },
-            { timeout: 15000 },
-            key
-          );
-          h.ok(true, "Circuito " + key + " dimensionado (seção em mm² exibida)");
-        }
+        // Fill distance for TUG circuit
+        await h.fill(page, '[data-dim-index="0"][data-circuit-type="tug"] input[data-field="tug.distancia"]', "20");
+        await page.waitForFunction(
+          () => {
+            const box = document.querySelector('[data-dim-index="0"][data-circuit-type="tug"] [data-result="0-tug"]');
+            return !!(box && /mm²/.test(box.textContent));
+          },
+          { timeout: 15000 }
+        );
+        h.ok(true, "Circuito TUG dimensionado (seção em mm² exibida)");
+
+        // Fill distance for Iluminação circuit
+        await h.fill(page, '[data-dim-index="0"][data-circuit-type="iluminacao"] input[data-field="iluminacao.distancia"]', "20");
+        await page.waitForFunction(
+          () => {
+            const box = document.querySelector('[data-dim-index="0"][data-circuit-type="iluminacao"] [data-result="0-iluminacao"]');
+            return !!(box && /mm²/.test(box.textContent));
+          },
+          { timeout: 15000 }
+        );
+        h.ok(true, "Circuito Iluminação dimensionado (seção em mm² exibida)");
       },
     },
   ],
