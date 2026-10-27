@@ -1,73 +1,102 @@
 <p align="center">
-  <img src="https://i.postimg.cc/445mwL81/Captura-de-tela-2026-08-07-235925.png" alt="DimenVolt Studio" width="100%">
+  <img src="https://i.postimg.cc/445mwL81/Captura-de-tela-2026-08-07-235925.png" alt="DimenVolt Studio — prévia da plataforma" width="100%">
 </p>
 
-# DimenVolt Studio
+<h1 align="center">DimenVolt Studio</h1>
 
-> Plataforma web para levantamento de instalações, dimensionamento de condutores e quadros de distribuição conforme a NBR 5410, com geração de relatórios técnicos em PDF.
+<p align="center">
+  <strong>Plataforma web para levantamento de instalações, dimensionamento de condutores e quadros de distribuição conforme a NBR 5410, com emissão de documentos técnicos em PDF.</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node.js 18+">
+  <img src="https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white" alt="Deploy Vercel">
+  <img src="https://img.shields.io/badge/Norma-NBR%205410-1b1b1b" alt="NBR 5410">
+  <img src="https://img.shields.io/badge/Licen%C3%A7a-Propriet%C3%A1ria-red" alt="Licença proprietária">
+</p>
 
 ---
 
-## ✦ ABOUT
+## Sumário
 
-O DimenVolt Studio é uma plataforma de engenharia elétrica que cobre o fluxo completo de um projeto: levantamento dos ambientes e pontos elétricos, dimensionamento de cabos e disjuntores, montagem do quadro de distribuição e emissão de documentos técnicos.
-
-O frontend é 100% estático e todo o cálculo roda no navegador. Em produção, a geração server-side de PDF é feita pelas serverless functions da Vercel em `api/report/*`; o `local_dev/server.js` (Express) existe **apenas** como servidor de desenvolvimento local e não é executado em produção. Quando nenhuma API está disponível, a plataforma reconstrói o relatório no cliente e abre a impressão do navegador (salvar como PDF).
+- [Sobre](#sobre)
+- [Funcionalidades](#funcionalidades)
+- [Módulos](#módulos)
+- [Produção × Desenvolvimento local](#produção--desenvolvimento-local)
+- [Fluxo do sistema](#fluxo-do-sistema)
+- [API de PDF](#api-de-pdf)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Dados técnicos](#dados-técnicos)
+- [Instalação e execução](#instalação-e-execução)
+- [Deploy](#deploy)
+- [Testes](#testes)
+- [Roadmap](#roadmap)
+- [Licença](#licença)
 
 ---
 
-## ✦ FEATURES
+## Sobre
 
-- **Levantamento elétrico** por ambientes com contagem separada de tomadas de uso geral (TUG) e uso específico (TUE) e pontos de iluminação, cada um com potência individual, além de interruptores e dimensões (área, perímetro e pé-direito).
+O **DimenVolt Studio** é uma plataforma de engenharia elétrica que cobre o fluxo completo de um projeto de instalação de baixa tensão: levantamento dos ambientes e pontos elétricos, dimensionamento de cabos e disjuntores, montagem do quadro de distribuição e emissão de documentos técnicos.
+
+O frontend é 100 % estático e **todo o cálculo roda no navegador**. Em produção, a geração server-side de PDF é feita pelas serverless functions da Vercel em `api/report/*`. O `local_dev/server.js` (Express) existe **apenas** como servidor de desenvolvimento local e não é executado em produção. Quando nenhuma API está disponível, a plataforma reconstrói o relatório no cliente e abre a impressão do navegador (salvar como PDF).
+
+---
+
+## Funcionalidades
+
+- **Levantamento elétrico** por ambientes, com contagem separada de tomadas de uso geral (TUG) e de uso específico (TUE), pontos de iluminação (cada um com potência individual), interruptores e dimensões (área, perímetro e pé-direito).
 - **Dimensionamento conforme NBR 5410** no navegador: corrente de projeto (Ib), capacidade de condução (Iz), seleção de seção, queda de tensão e margem térmica.
-- **Seleção automática de disjuntor** (curva C) com coordenação Ib <= In <= Iz.
-- **Fatores de correção** por temperatura ambiente, agrupamento de circuitos e condutores carregados.
+- **Seleção automática de disjuntor** (curva C) com coordenação Ib ≤ In ≤ Iz.
+- **Fatores de correção** por temperatura ambiente, agrupamento de circuitos e número de condutores carregados.
 - **Condutor neutro e PE** dimensionados a partir da seção de fase.
 - **Quadro de distribuição**: circuitos, disjuntores, fases (L1/L2/L3) e balanceamento automático entre fases.
-- **Lista de materiais estimada** a partir dos dados do levantamento (itens estimados sinalizados).
+- **Lista de materiais estimada** a partir dos dados do levantamento, com itens estimados sinalizados.
 - **Relatórios PDF técnicos** com numeração própria (RT-DIM, RT-LVT, RT-QDR) e modo duplo de geração (serverless na Vercel ou fallback no navegador).
 - **Tabelas de referência NBR 5410** integradas (capacidade de corrente e disjuntores).
 
 ---
 
-## ✦ MODULES
-
-- **Landing** (`/`) — apresentação da plataforma e acesso às ferramentas.
-- **Calculadora NBR 5410** (`/calculadora`) — dimensionamento de condutores e disjuntores (Ib, Iz, seção, queda de tensão e margem térmica), com relatório RT-DIM.
-- **Levantamento Elétrico** (`/levantamento`) — cadastro de ambientes, pontos TUG/TUE/iluminação, interruptores e dimensões, com relatório RT-LVT e lista de materiais opcional.
-- **Quadro de Distribuição** (`/quadro`) — circuitos, disjuntores, fases (L1/L2/L3) e balanceamento, com relatório RT-QDR.
+## Módulos
 
 Cada módulo é uma página independente em `src/frontend/pages/`, alimentada pelos scripts em `src/frontend/scripts/`.
 
+| Módulo | Rota | Descrição |
+| ------ | ---- | --------- |
+| Landing | `/` | Apresentação da plataforma e acesso às ferramentas |
+| Calculadora NBR 5410 | `/calculadora` | Dimensionamento de condutores e disjuntores (Ib, Iz, seção, queda de tensão, margem térmica), com relatório RT-DIM |
+| Levantamento Elétrico | `/levantamento` | Cadastro de ambientes, pontos TUG/TUE/iluminação, interruptores e dimensões, com relatório RT-LVT e lista de materiais opcional |
+| Quadro de Distribuição | `/quadro` | Circuitos, disjuntores, fases (L1/L2/L3) e balanceamento, com relatório RT-QDR |
+
 ---
 
-## ✦ PRODUCTION × LOCAL DEVELOPMENT
+## Produção × Desenvolvimento local
 
 O projeto separa de forma estrita o que é **produção** (publicado na Vercel) do que é **infraestrutura de desenvolvimento local** (não vai para produção).
 
-| Produção | Local development |
-| -------- | ----------------- |
+| Produção | Desenvolvimento local |
+| -------- | --------------------- |
 | `api/` | `local_dev/` |
 | `src/` | — |
 | `data/` | — |
 | `public/` | — |
 
-- `api/` — serverless functions da Vercel (`/api/report/pdf`, `/api/report/levantamento`, `/api/report/quadro`). Obrigatórias em produção.
-- `src/` — código-fonte da aplicação (frontend em `src/frontend/` e serviços compartilhados de PDF em `src/reports/`).
-- `data/` — bases de dados/JSON de configuração consumidos pela aplicação.
-- `public/` — assets estáticos servidos na raiz (favicons e documento técnico em `public/documents/`).
-- `local_dev/` — **apenas desenvolvimento e testes**: `local_dev/server.js` (servidor Express local), `local_dev/tests/` (suíte automatizada) e `local_dev/test-results/` (artefatos gerados, ignorados pelo git).
+- **`api/`** — serverless functions da Vercel (`/api/report/pdf`, `/api/report/levantamento`, `/api/report/quadro`). Obrigatórias em produção.
+- **`src/`** — código-fonte da aplicação (frontend em `src/frontend/` e serviços compartilhados de PDF em `src/reports/`).
+- **`data/`** — bases de dados/JSON de configuração consumidos pela aplicação.
+- **`public/`** — assets estáticos servidos na raiz (favicons e documento técnico em `public/documents/`).
+- **`local_dev/`** — **apenas desenvolvimento e testes**: `local_dev/server.js` (servidor Express local), `local_dev/tests/` (suíte automatizada) e `local_dev/test-results/` (artefatos gerados, ignorados pelo git).
 
 A produção não importa nada de `local_dev/`. A dependência existe apenas no sentido `local_dev → produção`: o servidor local e os testes usam os serviços compartilhados de `src/reports/`, mas as serverless functions de `api/` não dependem do servidor local.
 
 ---
 
-## ✦ SYSTEM FLOW
+## Fluxo do sistema
 
 Todos os cálculos são executados no navegador (JavaScript puro), lendo bases de dados JSON por `fetch`. A geração de PDF usa um único serviço compartilhado (`pdfGenerator.js`), montado por handlers HTTP idênticos (`report-endpoint.js`) tanto no servidor local quanto nas serverless functions da Vercel — não há lógica de PDF duplicada.
 
 ```text
-Local development                        Production (Vercel)
+Desenvolvimento local                     Produção (Vercel)
 ─────────────────────                    ─────────────────────
 browser ──> local_dev/server.js ──>      browser ──> Vercel CDN
               Express                                │
@@ -78,71 +107,30 @@ browser ──> local_dev/server.js ──>      browser ──> Vercel CDN
           serviço único e compartilhado (validação, HTML, Puppeteer)
 ```
 
-O `local_dev/server.js` roda somente em desenvolvimento: serve as páginas e expõe as mesmas rotas de API usadas pelas functions da Vercel em produção. Nenhum servidor manual é necessário para executar a aplicação na Vercel.
+O `local_dev/server.js` roda somente em desenvolvimento: serve as páginas e expõe as mesmas rotas de API de PDF usadas pelas functions da Vercel em produção. Nenhum servidor manual é necessário para executar a aplicação na Vercel.
 
-### Electrical Dimensioning
+### Dimensionamento elétrico
 
 ```mermaid
 sequenceDiagram
     participant U as Usuário
     participant UI as Calculadora
-    participant C as Motor de Cálculo (motor_calculo.js)
+    participant C as Motor de Cálculo
     participant D as Dados NBR 5410 (JSON)
-    participant S as API de PDF (local: Express / Vercel: serverless)
+    participant S as API de PDF
     participant P as Gerador de PDF (Puppeteer)
 
     U->>UI: Preenche tensão, potência, comprimento e parâmetros
-    UI->>C: Submete o formulário (performCalculation)
+    UI->>C: Submete o formulário
     C->>D: Carrega /data/*.json via fetch
-    D-->>C: Ampacidade, fatores, disjuntores e quedas de tensão
+    D-->>C: Ampacidade, fatores, disjuntores, quedas de tensão
     C->>C: Calcula Ib e Iz com correções (temp., agrupamento, condutores)
     C->>C: Seleciona seção mínima e disjuntor (curva C)
     C->>C: Verifica queda de tensão e margem térmica
     C-->>UI: Retorna resultados (cabo, disjuntor, Ib, Iz, queda, status)
     U->>UI: Solicita relatório PDF
-    UI->>S: POST /api/report/pdf (payload do cálculo)
-    S->>P: Valida e monta o HTML (validateReportPayload, buildReportHtml)
-    P-->>S: PDF gerado (printHtmlToPdf)
-    alt API indisponível
-        UI->>UI: Reconstrói o relatório no cliente (clientSideFallback)
-        UI-->>U: Abre impressão do navegador
-    else
-        S-->>UI: Retorna application/pdf
-        UI-->>U: Baixa o relatório
-    end
-```
-
-### Electrical Survey
-
-```mermaid
-sequenceDiagram
-    participant U as Usuário
-    participant UI as Levantamento
-    participant E as Estado da sessão
-    participant M as Catálogo de materiais (JSON)
-    participant S as API de PDF (local: Express / Vercel: serverless)
-    participant P as Gerador de PDF (Puppeteer)
-
-    U->>UI: Inicia o levantamento (btnStart)
-    U->>UI: Informa nome, tipo e tensão da obra
-    U->>UI: Ativa ambientes e informa pontos (TUG, TUE e iluminação, cada um com potência individual, além de interruptores)
-    UI->>E: Armazena unidades por ambiente (state.rooms)
-    UI->>E: computeTotals (pontos e potência)
-    UI->>U: Exibe resumo
-    U->>UI: Informa dimensões (comprimento, largura, altura)
-    UI->>UI: Calcula área e perímetro por ambiente
-    UI->>U: Exibe revisão final (renderFinal)
-    opt Lista de materiais selecionada (docType = materials)
-        U->>UI: Escolhe o tipo de documento "Materiais"
-        UI->>M: load() — fetch /data/materials.json
-        M-->>UI: Catálogo de materiais
-        UI->>M: buildMaterialsList(units, totals)
-        M-->>UI: Itens recomendados (estimados marcados)
-        UI->>U: Exibe prévia da lista
-    end
-    U->>UI: Gera relatório PDF
-    UI->>S: POST /api/report/levantamento (inclui materiais quando aplicável)
-    S->>P: Valida e monta o HTML (validateLevantamentoPayload, buildLevantamentoHtml)
+    UI->>S: POST /api/report/pdf
+    S->>P: Valida e monta o HTML
     P-->>S: PDF gerado
     alt API indisponível
         UI->>UI: Reconstrói o relatório no cliente
@@ -153,29 +141,69 @@ sequenceDiagram
     end
 ```
 
-### Distribution Board
+### Levantamento elétrico
+
+```mermaid
+sequenceDiagram
+    participant U as Usuário
+    participant UI as Levantamento
+    participant E as Estado da sessão
+    participant M as Catálogo de materiais (JSON)
+    participant S as API de PDF
+    participant P as Gerador de PDF (Puppeteer)
+
+    U->>UI: Inicia o levantamento
+    U->>UI: Informa nome, tipo e tensão da obra
+    U->>UI: Ativa ambientes e informa pontos (TUG, TUE, iluminação, interruptores)
+    UI->>E: Armazena unidades por ambiente
+    UI->>E: Calcula totais (pontos e potência)
+    UI->>U: Exibe resumo
+    U->>UI: Informa dimensões (comprimento, largura, altura)
+    UI->>UI: Calcula área e perímetro por ambiente
+    UI->>U: Exibe revisão final
+    opt Lista de materiais selecionada
+        U->>UI: Escolhe o tipo de documento "Materiais"
+        UI->>M: Carrega /data/materials.json
+        M-->>UI: Catálogo de materiais
+        UI->>M: Monta lista (itens estimados sinalizados)
+        UI->>U: Exibe prévia da lista
+    end
+    U->>UI: Gera relatório PDF
+    UI->>S: POST /api/report/levantamento
+    S->>P: Valida e monta o HTML
+    P-->>S: PDF gerado
+    alt API indisponível
+        UI->>UI: Reconstrói o relatório no cliente
+        UI-->>U: Abre impressão do navegador
+    else
+        S-->>UI: Retorna application/pdf
+        UI-->>U: Baixa o relatório
+    end
+```
+
+### Quadro de distribuição
 
 ```mermaid
 sequenceDiagram
     participant U as Usuário
     participant UI as Quadro
     participant C as Cálculo (quadro.js)
-    participant S as API de PDF (local: Express / Vercel: serverless)
+    participant S as API de PDF
     participant P as Gerador de PDF (Puppeteer)
 
-    U->>UI: Inicia o quadro (btnStart)
-    U->>UI: Informa identificação, tensão e sistema (mono/bifásico/trifásico)
+    U->>UI: Inicia o quadro
+    U->>UI: Informa identificação, tensão e sistema (mono/bi/trifásico)
     U->>UI: Adiciona circuito (ID, descrição, tipo, potência)
-    UI->>C: readCircuitForm → addCircuit
+    UI->>C: Lê formulário e adiciona circuito
     C->>C: Estima a corrente quando não informada (potência ÷ tensão)
     U->>UI: Define disjuntor e fase (L1/L2/L3)
-    U->>UI: Conclui os circuitos (renderRevisao)
-    UI->>C: computeTotals (potência, corrente, disjuntores, fases)
-    UI->>C: computeBalance (proporção entre fases 1,5:1)
+    U->>UI: Conclui os circuitos
+    UI->>C: Calcula totais (potência, corrente, disjuntores, fases)
+    UI->>C: Calcula balanceamento (proporção entre fases 1,5:1)
     C-->>UI: Resumo e status de balanceamento
     U->>UI: Gera PDF
-    UI->>S: POST /api/report/quadro (payload do quadro)
-    S->>P: Valida e monta o HTML (validateQuadroPayload, buildQuadroHtml)
+    UI->>S: POST /api/report/quadro
+    S->>P: Valida e monta o HTML
     P-->>S: PDF gerado
     alt API indisponível
         UI->>UI: Reconstrói o relatório no cliente
@@ -188,7 +216,7 @@ sequenceDiagram
 
 ---
 
-## ✦ API DE PDF
+## API de PDF
 
 Em produção, os relatórios são gerados pelas serverless functions da Vercel em `api/report/*`. Todas aceitam `POST` com um payload JSON (a mesma estrutura que o cliente envia) e respondem `application/pdf` com o arquivo em anexo; payloads inválidos respondem `400` com `{ "error": "..." }`.
 
@@ -202,15 +230,15 @@ Em desenvolvimento, o `local_dev/server.js` expõe exatamente as mesmas três ro
 
 ### Arquitetura de PDF (serviço compartilhado)
 
-- `pdfGenerator.js` — valida os payloads, monta o HTML dos relatórios e gera o PDF via Puppeteer. É o único lugar onde os relatórios são construídos.
-- `report-endpoint.js` — adapta os geradores ao contrato HTTP (`createPdfEndpoint`): cabeçalhos `Content-Type`/`Content-Disposition`, status 200 com o PDF e 400 para erros de validação. Usado tanto pelo `local_dev/server.js` quanto pelas functions da Vercel.
-- `pdf-report.js` — cliente que envia o payload para `/api/report/*`; quando a API não responde, reconstrói o relatório no navegador e abre a impressão (mesmos templates e validações).
+- **`pdfGenerator.js`** — valida os payloads, monta o HTML dos relatórios e gera o PDF via Puppeteer. É o único lugar onde os relatórios são construídos.
+- **`report-endpoint.js`** — adapta os geradores ao contrato HTTP (`createPdfEndpoint`): cabeçalhos `Content-Type`/`Content-Disposition`, status 200 com o PDF e 400 para erros de validação. Usado tanto pelo `local_dev/server.js` quanto pelas functions da Vercel.
+- **`pdf-report.js`** — cliente que envia o payload para `/api/report/*`; quando a API não responde, reconstrói o relatório no navegador e abre a impressão (mesmos templates e validações).
 
 O navegador é iniciado de forma adaptativa em `pdfGenerator.js`: na Vercel (runtime serverless) usa `@sparticuz/chromium` + `puppeteer-core`; localmente usa o `puppeteer`, que aponta por padrão para `PUPPETEER_EXECUTABLE_PATH` quando definido. A escolha é feita em runtime pela presença do ambiente Vercel/Lambda.
 
 ---
 
-## ✦ PROJECT STRUCTURE
+## Estrutura do projeto
 
 ```
 ├── api/                              # Serverless functions da Vercel (produção)
@@ -285,7 +313,7 @@ O navegador é iniciado de forma adaptativa em `pdfGenerator.js`: na Vercel (run
 
 ---
 
-## ✦ DATA
+## Dados técnicos
 
 As bases técnicas são arquivos JSON em `data/`, consumidos diretamente pelo navegador e também pelo gerador de PDF.
 
@@ -306,9 +334,9 @@ As bases técnicas são arquivos JSON em `data/`, consumidos diretamente pelo na
 
 ---
 
-## ✦ SETUP
+## Instalação e execução
 
-Pré-requisitos: Node.js 18 ou superior.
+Pré-requisitos: **Node.js 18 ou superior**.
 
 ```bash
 npm install
@@ -319,12 +347,12 @@ O `npm start` executa `local_dev/server.js`: sobe o servidor local de desenvolvi
 
 O `.npmrc` do projeto configura `puppeteer_skip_download=true`: o Puppeteer **não** baixa o Chrome durante a instalação, o que mantém o `npm install` funcional em Termux/Android (sem build oficial do Chromium) e evita um download desnecessário na Vercel (que usa `@sparticuz/chromium`). Para gerar PDF localmente, aponte `PUPPETEER_EXECUTABLE_PATH` para um Chromium disponível no ambiente.
 
-| Rota           | Página                              |
-| -------------- | ----------------------------------- |
-| `/`            | Landing page                        |
-| `/calculadora` | Calculadora de dimensionamento      |
-| `/levantamento`| Levantamento elétrico da instalação |
-| `/quadro`      | Quadro de distribuição              |
+| Rota | Página |
+| ---- | ------ |
+| `/` | Landing page |
+| `/calculadora` | Calculadora de dimensionamento |
+| `/levantamento` | Levantamento elétrico da instalação |
+| `/quadro` | Quadro de distribuição |
 
 ### Documentação técnica
 
@@ -332,7 +360,7 @@ O `.npmrc` do projeto configura `puppeteer_skip_download=true`: o Puppeteer **n�
 
 ---
 
-## ✦ DEPLOYMENT
+## Deploy
 
 Em produção o projeto roda inteiramente na Vercel: as páginas em `src/frontend/pages/` são publicadas como estáticas e as rotas de PDF (`/api/report/pdf`, `/api/report/levantamento`, `/api/report/quadro`) são resolvidas pelas serverless functions de `api/report/*`, que usam apenas os serviços compartilhados de `src/reports/`. **Nenhum servidor Express é executado em produção — o `local_dev/` inteiro é dispensável no runtime da Vercel.**
 
@@ -344,7 +372,7 @@ O `vercel.json` mapeia as rotas limpas (`/`, `/landing`, `/calculadora`, `/levan
 
 ---
 
-## ✦ TESTING
+## Testes
 
 A suíte automatizada fica em `local_dev/tests/` e é executada pelo runner `local_dev/tests/service_test.js`, que sobe o `local_dev/server.js` em uma porta livre e roda as suítes contra o navegador real (Puppeteer):
 
@@ -371,7 +399,7 @@ Os helpers comuns (motor in-process, inspeção de PDF/PNG, contexto por teste) 
 
 ---
 
-## ✦ ROADMAP
+## Roadmap
 
 - Salvar e reabrir projetos (localStorage ou conta na nuvem).
 - Cálculo de demanda e dimensionamento de alimentadores conforme fatores de demanda da NBR 5410.
@@ -380,6 +408,12 @@ Os helpers comuns (motor in-process, inspeção de PDF/PNG, contexto por teste) 
 
 ---
 
-## ✦ LICENSE
+## Licença
 
 Este projeto é de uso proprietário/privado. Não há arquivo de licença incluído e todos os direitos são reservados; nenhuma licença de uso, cópia ou distribuição é concedida.
+
+---
+
+<p align="center">
+  <sub>Desenvolvido com ⚡ por <strong>Isac Ornelas</strong> · DimenVolt Studio</sub>
+</p>
