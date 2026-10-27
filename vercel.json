@@ -2,25 +2,86 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "builds": [
-    { "src": "src/frontend/pages/*.html", "use": "@vercel/static" },
-    { "src": "src/frontend/styles/*.css", "use": "@vercel/static" },
-    { "src": "src/frontend/scripts/*.js", "use": "@vercel/static" },
-    { "src": "src/reports/*.js", "use": "@vercel/static" },
-    { "src": "public/**/*", "use": "@vercel/static" },
-    { "src": "data/*.json", "use": "@vercel/static" },
-    { "src": "api/report/*.js", "use": "@vercel/node", "config": { "maxDuration": 60 } }
+    {
+      "src": "src/frontend/pages/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/frontend/styles/*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/frontend/scripts/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/reports/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "data/*.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/report/*.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxDuration": 60
+      }
+    }
   ],
   "routes": [
-    { "src": "^/$", "dest": "/src/frontend/pages/index.html" },
-    { "src": "^/landing/?$", "dest": "/src/frontend/pages/index.html" },
-    { "src": "^/calculadora/?$", "dest": "/src/frontend/pages/calculadora.html" },
-    { "src": "^/levantamento/?$", "dest": "/src/frontend/pages/levantamento.html" },
-    { "src": "^/quadro/?$", "dest": "/src/frontend/pages/quadro.html" },
-    { "src": "^/favicon\\.svg$", "dest": "/public/favicon.svg" },
-    { "src": "^/favicon\\.ico$", "dest": "/public/favicon.ico" },
-    { "src": "^/documents/(.*)$", "dest": "/public/documents/$1" },
-    { "src": "^/api/report/(pdf|levantamento|quadro)$", "dest": "/api/report/$1" },
-    { "src": "^/data/(.*)$", "dest": "/data/$1" },
-    { "src": "/(.*)", "dest": "/$1" }
+    {
+      "src": "^/$",
+      "dest": "/src/frontend/pages/index.html"
+    },
+    {
+      "src": "^/landing/?$",
+      "dest": "/src/frontend/pages/index.html"
+    },
+    {
+      "src": "^/calculadora/?$",
+      "dest": "/src/frontend/pages/calculadora.html"
+    },
+    {
+      "src": "^/levantamento/?$",
+      "dest": "/src/frontend/pages/levantamento.html"
+    },
+    {
+      "src": "^/quadro/?$",
+      "dest": "/src/frontend/pages/quadro.html"
+    },
+    {
+      "src": "^/favicon\\.svg$",
+      "dest": "/public/favicon.svg"
+    },
+    {
+      "src": "^/favicon\\.ico$",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "^/documents/(.*)$",
+      "dest": "/public/documents/$1"
+    },
+    {
+      "src": "^/api/report/(pdf|levantamento|quadro)$",
+      "dest": "/api/report/$1"
+    },
+    {
+      "src": "^/data/(.*)$",
+      "dest": "/data/$1"
+    },
+    {
+      "src": "^/google845804da19e7bbda\\.html$",
+      "dest": "/public/google845804da19e7bbda.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }
