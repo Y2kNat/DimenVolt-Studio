@@ -4,7 +4,7 @@
   "description": "DimenVolt Studio — levantamento e dimensionamento elétrico NBR 5410",
   "main": "local_dev/server.js",
   "private": true,
-  "author": "Isac Ornelas <contato@dimenvolt.com>",
+  "author": "Isac Ornelas <ornelasisac13@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
     "start": "node local_dev/server.js",

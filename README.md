@@ -438,7 +438,7 @@ O Software é fornecido "no estado em que se encontra" ("AS IS"), sem garantia d
 
 ### Contato para licenciamento
 
-Para solicitar autorização de uso, cópia, modificação ou redistribuição, entre em contato com o titular: **Isac Ornelas / DimenVolt Studio** (e-mail a ser informado).
+Para solicitar autorização de uso, cópia, modificação ou redistribuição, entre em contato com o titular: **Isac Ornelas / DimenVolt Studio** (ornelasisac13@gmail.com).
 
 > A versão vigente dos termos é sempre a do arquivo [`LICENSE`](./LICENSE) no repositório.
 
