@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node.js 18+">
   <img src="https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white" alt="Deploy Vercel">
   <img src="https://img.shields.io/badge/Norma-NBR%205410-1b1b1b" alt="NBR 5410">
-  <img src="https://img.shields.io/badge/Licen%C3%A7a-Propriet%C3%A1ria-red" alt="Licença proprietária">
+  <img src="https://img.shields.io/badge/Licen%C3%A7a-Propriet%C3%A1ria%20%E2%80%94%20All%20Rights%20Reserved-red" alt="Licença proprietária — All Rights Reserved">
 </p>
 
 ---
@@ -410,9 +410,38 @@ Os helpers comuns (motor in-process, inspeção de PDF/PNG, contexto por teste) 
 
 ## Licença
 
-Este projeto é de uso proprietário/privado. Não há arquivo de licença incluído e todos os direitos são reservados; nenhuma licença de uso, cópia ou distribuição é concedida.
+Este projeto é **proprietário** e está licenciado sob **All Rights Reserved** (todos os direitos reservados). Os termos completos estão no arquivo [`LICENSE`](./LICENSE) na raiz do repositório — este aviso no README não substitui a licença completa.
 
----
+### O que é permitido
+
+- Visualizar e estudar o código-fonte para fins pessoais, educacionais ou de avaliação.
+- Clonar o repositório e executar o Software localmente em ambiente de desenvolvimento, para uso pessoal ou de avaliação.
+- Referenciar o projeto em portfólios, artigos ou materiais acadêmicos, com a devida atribuição ao titular.
+
+### O que NÃO é permitido (sem autorização prévia e por escrito)
+
+- Copiar, reproduzir, distribuir, publicar ou disponibilizar o Software (ou parte dele) a terceiros.
+- Modificar, adaptar, traduzir, descompilar, fazer engenharia reversa ou criar obras derivadas.
+- Mesclar o Software (ou parte dele) com outros projetos ou bases de código.
+- Sublicenciar, vender, alugar, arrendar ou explorar comercialmente o Software.
+- Hospedar o Software (ou parte dele) em servidores, plataformas ou serviços acessíveis ao público.
+- Remover, alterar ou ocultar avisos de copyright, créditos, marcas ou outros avisos de propriedade.
+- Usar o Software para fins ilegais, fraudulentos ou que violem direitos de terceiros.
+
+### Marca e identidade visual
+
+"DimenVolt", "DimenVolt Studio" e quaisquer logotipos, ícones e elementos visuais associados são marcas do titular. Esta licença não concede direito sobre essas marcas.
+
+### Garantia e responsabilidade
+
+O Software é fornecido "no estado em que se encontra" ("AS IS"), sem garantia de qualquer tipo. O titular não se responsabiliza por danos diretos ou indiretos decorrentes do uso do Software.
+
+### Contato para licenciamento
+
+Para solicitar autorização de uso, cópia, modificação ou redistribuição, entre em contato com o titular: **Isac Ornelas / DimenVolt Studio** (e-mail a ser informado).
+
+> A versão vigente dos termos é sempre a do arquivo [`LICENSE`](./LICENSE) no repositório.
+
 
 <p align="center">
   <sub>Desenvolvido com ⚡ por <strong>Isac Ornelas</strong> · DimenVolt Studio</sub>

@@ -6,3 +6,6 @@ node_modules/
 # Resultados gerados pela suíte de testes (local_dev/tests)
 # Os arquivos-fonte da suíte (local_dev/tests/, local_dev/server.js) são versionados.
 local_dev/test-results/
+
+# Pasta Android App (não versionada)
+Android App/

@@ -1,0 +1,102 @@
+LICENÇA DE SOFTWARE PROPRIETÁRIA — ALL RIGHTS RESERVED
+
+Copyright (c) 2024–2026 Isac Ornelas / DimenVolt Studio. Todos os direitos reservados.
+
+1. DEFINIÇÕES
+
+   "Software" refere-se ao projeto DimenVolt Studio, incluindo, mas não se
+   limitando a: código-fonte, arquivos de configuração, bases de dados (JSON),
+   estilos, scripts, templates de relatórios, documentação e quaisquer outros
+   arquivos contidos neste repositório.
+
+   "Titular" refere-se a Isac Ornelas / DimenVolt Studio, detentor dos direitos
+   autorais e de propriedade intelectual do Software.
+
+   "Você" refere-se a qualquer pessoa física ou jurídica que acesse, clone,
+   baixe, visualize, execute ou utilize o Software.
+
+2. CONCESSÃO DE LICENÇA
+
+   O Titular concede a Você uma licença limitada, não exclusiva, não
+   transferível e revogável para:
+
+   (a) Visualizar e estudar o código-fonte do Software para fins pessoais,
+       educacionais ou de avaliação;
+   (b) Clonar o repositório e executar o Software localmente em ambiente de
+       desenvolvimento, desde que para uso pessoal ou de avaliação;
+   (c) Referenciar o projeto em portfólios, artigos ou materiais acadêmicos,
+       desde que com a devida atribuição ao Titular.
+
+3. RESTRIÇÕES
+
+   Sem autorização prévia e por escrito do Titular, Você NÃO pode:
+
+   (a) Copiar, reproduzir, distribuir, publicar, transmitir ou disponibilizar
+       o Software (ou parte dele) a terceiros, por qualquer meio;
+   (b) Modificar, adaptar, traduzir, descompilar, fazer engenharia reversa ou
+       criar obras derivadas do Software;
+   (c) Mesclar o Software (ou parte dele) com outros projetos ou bases de código;
+   (d) Sublicenciar, vender, alugar, arrendar, emprestar ou explorar
+       comercialmente o Software;
+   (e) Hospedar o Software (ou parte dele) em servidores, plataformas ou
+       serviços acessíveis ao público;
+   (f) Remover, alterar ou ocultar avisos de copyright, créditos, marcas ou
+       outros avisos de propriedade presentes no Software ou em sua documentação;
+   (g) Usar o Software (ou parte dele) para fins ilegais, fraudulentos ou que
+       violem direitos de terceiros.
+
+4. MARCA E IDENTIDADE VISUAL
+
+   "DimenVolt", "DimenVolt Studio" e quaisquer logotipos, ícones, favicons e
+   elementos visuais associados são marcas e identidade visual do Titular. Esta
+   licença não concede qualquer direito sobre essas marcas. O uso não autorizado
+   de nomes, logotipos ou identidade visual do Titular é proibido.
+
+5. AUSÊNCIA DE GARANTIA
+
+   O SOFTWARE É FORNECIDO "NO ESTADO EM QUE SE ENCONTRA" ("AS IS"), SEM
+   GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO SE
+   LIMITANDO A, GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM PROPÓSITO
+   ESPECÍFICO E NÃO VIOLAÇÃO. O TITULAR NÃO GARANTE QUE O SOFTWARE SERÁ LIVRE
+   DE ERROS, ININTERRUPTO OU ADEQUADO A QUALQUER USO ESPECÍFICO.
+
+6. LIMITAÇÃO DE RESPONSABILIDADE
+
+   EM NENHUMA HIPÓTESE O TITULAR SERÁ RESPONSÁVEL POR QUAISQUER DANOS DIRETOS,
+   INDIRETOS, INCIDENTAIS, ESPECIAIS, EXEMPLARES OU CONSEQUENCIAIS (INCLUINDO,
+   MAS NÃO SE LIMITANDO A, PERDA DE DADOS, LUCROS CESSANTES, INTERRUPÇÃO DE
+   NEGÓCIOS OU QUALQUER OUTRO PREJUÍZO) DECORRENTES DO USO, IMPOSSIBILIDADE DE
+   USO OU MAU USO DO SOFTWARE, MESMO QUE O TITULAR TENHA SIDO ALERTADO SOBRE A
+   POSSIBILIDADE DE TAIS DANOS.
+
+7. DEPENDÊNCIAS DE TERCEIROS
+
+   O Software utiliza bibliotecas e dependências de terceiros (listadas em
+   package.json e package-lock.json). Essas dependências são regidas por suas
+   próprias licenças, que permanecem em vigor independentemente desta licença.
+   O Titular não concede nem restringe direitos sobre tais dependências.
+
+8. RESERVA DE DIREITOS
+
+   Todos os direitos não expressamente concedidos nesta licença são reservados
+   ao Titular. O Titular reserva-se o direito de alterar, atualizar ou revogar
+   esta licença a qualquer momento; a versão vigente é sempre a do arquivo
+   LICENSE presente no repositório.
+
+9. CONTATO PARA LICENCIAMENTO
+
+   Para solicitar autorização de uso, cópia, modificação ou redistribuição do
+   Software (ou parte dele), entre em contato com o Titular:
+
+   Isac Ornelas / DimenVolt Studio
+   E-mail: [preencher com e-mail de contato]
+
+10. LEI APLICÁVEL
+
+    Esta licença será regida e interpretada de acordo com as leis do Brasil.
+    Quaisquer disputas decorrentes desta licença serão submetidas à jurisdição
+    exclusiva dos tribunais competentes do Brasil.
+
+---
+
+Copyright (c) 2024–2026 Isac Ornelas / DimenVolt Studio. All Rights Reserved.
