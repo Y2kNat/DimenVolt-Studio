@@ -94,6 +94,8 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
           root.classList.remove('js-hero');
           gsap.set(CLEAR, { clearProps: 'all' });
           introDone = true;
+          // Re-apply scroll-based tilt so the hero stays slightly inclined at rest
+          window.dispatchEvent(new Event('scroll'));
           startFloat();
         },
       })

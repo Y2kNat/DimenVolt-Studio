@@ -852,6 +852,7 @@ body.hero-live .dv-b3 { animation-play-state: running; }
   margin-left: -22px;
   transform-origin: 0 0;
   will-change: transform;
+  transform: rotateX(2.5deg) rotateY(-1deg) skewX(4.3deg) rotate(-1.5deg);
   background: linear-gradient(180deg, var(--dv-panel), oklch(0.13 0.01 265));
   border: 1px solid var(--dv-line);
   border-radius: 17px;
@@ -1089,3 +1090,37 @@ body.hero-live .dv-b3 { animation-play-state: running; }
   .js-hero .dv-bg i,
   .js-hero .dv-stage { opacity: 1 !important; }
 }
+
+/* ===== Vetor "conexão de circuito" (decorativo — só na última parte) =====
+   Traços estilo PCB no CTA final. Estático por construção: aria-hidden,
+   pointer-events none, zero animação própria.
+   Cor: a mesma das linhas translúcidas da landing (--line ~8%). Traço
+   preto puro sumiria no fundo #050505 e só "morderia" o grid — testado
+   em dev; a cor de linha é a legível em toda a área. */
+.dv-circuit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  color: rgba(244, 244, 241, 0.08);
+}
+
+/* A seção vira stacking context para confinar o traço em -1
+   (não vaza para trás das seções anteriores). */
+.final-cta {
+  position: relative;
+  isolation: isolate;
+}
+
+.final-circuit {
+  z-index: -1; /* sob o texto/botões da seção */
+}
+
+/* Celular: sem vetor (visível apenas em PC e tablet) */
+@media (max-width: 560px) {
+  .dv-circuit { display: none; }
+}
+
+/* Reduced motion: o vetor é estático — nada a pausar aqui. */
