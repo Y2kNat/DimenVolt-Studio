@@ -317,7 +317,7 @@
     }
   }
 
-  /* ---------- motor de cálculo ---------- */
+
 
   function voltageNumber() {
     return parseInt(state.obra.tensao, 10) || 127;
@@ -462,14 +462,14 @@
     });
     flattenUnits().forEach(function (item) {
       var u = item.unit;
-      // TUG: single circuit
+
       if (unitTugPower(u) > 0) dimensionUnit(u, "tug");
-      // TUE: per point
+
       (u.tue || []).forEach(function (p) {
         ensureTueDim(p);
         if (num(p.potencia) > 0) dimensionUnit(u, "tue", p.id);
       });
-      // Iluminação: single circuit
+
       if (unitIluminacaoPower(u) > 0) dimensionUnit(u, "iluminacao");
     });
   }
@@ -478,15 +478,15 @@
     var total = 0;
     flattenUnits().forEach(function (item) {
       var u = item.unit;
-      // TUG
+
       var tugRes = u.dimensionamento.tug.result;
       if (tugRes && tugRes.ok && tugRes.ib) total += tugRes.ib;
-      // TUE: per point
+
       (u.tue || []).forEach(function (p) {
         ensureTueDim(p);
         if (p.result && p.result.ok && p.result.ib) total += p.result.ib;
       });
-      // Iluminação
+
       var iluRes = u.dimensionamento.iluminacao.result;
       if (iluRes && iluRes.ok && iluRes.ib) total += iluRes.ib;
     });
@@ -508,7 +508,7 @@
     return conductorCountFor(res) * num(distancia);
   }
 
-  /* ---------- toast ---------- */
+
 
   var toastEl = null;
   var toastTimer = null;
@@ -541,7 +541,7 @@
     if (el) el.hidden = true;
   }
 
-  /* ---------- navigation ---------- */
+
 
   function updateProgress(step) {
     var show = step > 0;
@@ -664,7 +664,7 @@
     goToStep(state.step - 1);
   }
 
-  /* ---------- renderers ---------- */
+
 
   function renderAmbientes() {
     els.ambientesRoot.innerHTML =
@@ -933,12 +933,12 @@
 
   function circuitTypeCardHtml(def, units) {
     var tipo = def.key;
-    // Collect circuits of this type
+
     var circuits = [];
     units.forEach(function (item, index) {
       var u = item.unit;
       if (tipo === "tue") {
-        // TUE: one circuit per point
+
         (u.tue || []).forEach(function (p) {
           ensureTueDim(p);
           if (num(p.potencia) > 0) {
@@ -946,7 +946,7 @@
           }
         });
       } else {
-        // TUG / Iluminação: one circuit per room (summed)
+
         var potencia = num(unitPointPower(u, tipo));
         if (potencia > 0) {
           circuits.push({ item: item, index: index, point: null, potencia: potencia });
@@ -1076,7 +1076,7 @@
       units.forEach(function (item) {
         var u = item.unit;
         if (tipo === "tue") {
-          // TUE: per point
+
           (u.tue || []).forEach(function (p) {
             ensureTueDim(p);
             var potencia = num(p.potencia);
@@ -1092,7 +1092,7 @@
             blocks += blockHtml(item.unitLabel + " · " + item.roomLabel + " · " + def.label + " " + p.id, body);
           });
         } else {
-          // TUG / Iluminação: per room
+
           var dim = u.dimensionamento[tipo];
           var res = dim.result;
           var distancia = num(dim.distancia);
@@ -1322,7 +1322,7 @@
     );
   }
 
-  /* ---------- document choice & materials ---------- */
+
 
   function syncDocChoice() {
     if (!els.docChoice) return;
@@ -1439,7 +1439,7 @@
     syncDocChoice();
   }
 
-  /* ---------- events ---------- */
+
 
   function findRoom(id) {
     return state.rooms.find(function (r) { return r.id === id; });
@@ -1540,14 +1540,14 @@
     var pointId = input.getAttribute("data-point-id");
     var res;
     if (pointId) {
-      // TUE per-point
+
       var point = (item.unit.tue || []).find(function (p) { return num(p.id) === num(pointId); });
       if (!point) return;
       ensureTueDim(point);
       point.distancia = num(input.value);
       res = dimensionUnit(item.unit, tipo, pointId);
     } else {
-      // TUG / Iluminação per-room
+
       var parts = field.split(".");
       if (parts.length === 2) {
         item.unit.dimensionamento[tipo].distancia = num(input.value);
@@ -1702,7 +1702,7 @@
     if (btn && document.activeElement === btn) btn.blur();
   });
 
-  /* ---------- PDF ---------- */
+
 
   function buildPdfPayload() {
     var totals = computeTotals();

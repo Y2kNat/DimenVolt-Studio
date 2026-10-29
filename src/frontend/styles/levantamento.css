@@ -31,7 +31,7 @@
 
 .lv-link:hover { color: var(--text); }
 
-/* Circuit-trace progress */
+
 .lv-progress {
   width: min(920px, calc(100% - 40px));
   margin: 18px auto 0;
@@ -625,7 +625,7 @@
 
 .lv-calc-pill-total { grid-column: 1 / -1; }
 
-/* ---------- Pontos TUG / TUE / Iluminação ---------- */
+
 
 .lv-point-group {
   padding: 12px 14px;
@@ -846,7 +846,7 @@
 
 .lv-table tbody tr:last-child td { border-bottom: 0; }
 
-/* ---------- Document choice & materials ---------- */
+
 
 .lv-doc {
   display: grid;
@@ -1199,7 +1199,7 @@
 
 .lv-footer a:hover { color: var(--text); }
 
-/* ---------- Entrance (page load) ---------- */
+
 
 @keyframes lv-rise-in {
   from {
@@ -1256,7 +1256,7 @@
   }
 }
 
-/* Toast */
+
 .lv-toast {
   position: fixed;
   left: 50%;
@@ -1312,7 +1312,7 @@
   .lv-room-head { flex-wrap: wrap; }
 }
 
-/* ---------- Dimensionamento por tipo de circuito (etapa 3) ---------- */
+
 
 .lv-stack-offset { margin-top: 14px; }
 
@@ -1528,8 +1528,8 @@
   .lv-advanced > header { flex-wrap: wrap; }
 }
 
-/* Boot: tela preta de 0,5s → aparece. Só CSS (animação roda sem JS);
-   o conteúdo da página fica atrás da cortina desde o primeiro paint. */
+
+
 #boot-black {
   position: fixed;
   inset: 0;
@@ -1543,8 +1543,8 @@
   to { opacity: 0; visibility: hidden; }
 }
 
-/* Barra inferior estilo Android (≤768px) — idêntica à da Calculadora.
-   No desktop o levantamento mantém o próprio cabeçalho/fluxo. */
+
+
 .lv-bottombar {
   display: none;
 }

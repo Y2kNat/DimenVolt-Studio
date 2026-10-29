@@ -19,7 +19,7 @@
 <body>
   <div id="boot-black" aria-hidden="true"></div>
   <script>
-    /* Segurança: se a animação CSS não rodar, a cortina é removida via JS em 1.2s. */
+
     setTimeout(function () {
       var b = document.getElementById('boot-black');
       if (b) { b.style.display = 'none'; }
@@ -57,7 +57,7 @@
   <main class="lv-shell">
     <div class="lv-stage" id="lvStage">
 
-      <!-- 0 · Início -->
+
       <section class="lv-panel is-active" data-step="0" id="step-start">
         <div class="lv-hero-card">
           <p class="eyebrow">Módulo Studio</p>
@@ -75,7 +75,7 @@
         </div>
       </section>
 
-      <!-- 1 · Dados do cliente -->
+
       <section class="lv-panel" data-step="1" id="step-obra" hidden>
         <header class="lv-panel-head">
           <p class="eyebrow">Etapa 01</p>
@@ -113,7 +113,7 @@
         </div>
       </section>
 
-      <!-- 2 · Ambientes -->
+
       <section class="lv-panel" data-step="2" id="step-ambientes" hidden>
         <header class="lv-panel-head">
           <p class="eyebrow">Etapa 02</p>
@@ -128,7 +128,7 @@
         </div>
       </section>
 
-      <!-- 3 · Dimensionamento -->
+
       <section class="lv-panel" data-step="3" id="step-dimensionamento" hidden>
         <header class="lv-panel-head">
           <p class="eyebrow">Etapa 03</p>
@@ -144,7 +144,7 @@
         </div>
       </section>
 
-      <!-- 4 · Resumo -->
+
       <section class="lv-panel" data-step="4" id="step-resumo" hidden>
         <header class="lv-panel-head">
           <p class="eyebrow">Etapa 04</p>
@@ -159,7 +159,7 @@
         </div>
       </section>
 
-      <!-- 5 · Final -->
+
       <section class="lv-panel" data-step="5" id="step-final" hidden>
         <header class="lv-panel-head">
           <p class="eyebrow">Etapa 05</p>
@@ -209,7 +209,7 @@
     <a href="/">Voltar à landing</a>
   </footer>
 
-  <!-- Barra inferior estilo Android (igual à da Calculadora), só em mobile -->
+
   <nav class="lv-bottombar" aria-label="Navegação">
     <a href="/" title="Início"><i class="fas fa-home"></i><span>Início</span></a>
     <a href="/calculadora#calculator" title="Calculadora"><i class="fas fa-sliders-h"></i><span>Calculadora</span></a>
@@ -225,7 +225,7 @@
   <script src="/src/frontend/scripts/materials-service.js"></script>
   <script src="/src/frontend/scripts/levantamento.js"></script>
 
-  <!-- Vercel Web Analytics: servido pela plataforma em produção; local dev usa shim -->
+
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

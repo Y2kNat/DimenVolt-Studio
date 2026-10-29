@@ -6,7 +6,7 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 } else document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
 
-// Hero v2: tilte 3D da janela + blobs em parallax conforme o scroll.
+
 (function () {
   const win = document.getElementById('dv-win');
   const blobs = ['dv-b1', 'dv-b2', 'dv-b3'].map((id) => document.getElementById(id));
@@ -30,10 +30,8 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   update();
 })();
 
-// Background da hero vivo: o IntersectionObserver manuten body.hero-live
-// enquanto a hero está em viewport (cf. regras .dv-b* em landing.css, que
-// pausam a animação CSS fora dela). Também avisa a intro para congelar a
-// flutuação GSAP do .dv-stage quando a hero não está visível.
+
+
 (function () {
   const hero = document.querySelector('.dv-hero');
   if (!hero || prefersReducedMotion || !('IntersectionObserver' in window)) return;
@@ -51,12 +49,11 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   apply();
 })();
 
-// Intro do hero com GSAP: entrada em cascata (nav → copy → estágio) e
-// flutuação sutil contínua da janela. Sem GSAP (CDN fora) ou com
-// prefers-reduced-motion → remove o estado inicial e mostra tudo direto.
+
+
 (function () {
   const root = document.documentElement;
-  if (!document.querySelector('.dv-stage')) return; // páginas sem hero v2
+  if (!document.querySelector('.dv-stage')) return;
   const SEL = '.dv-nav, .dv-h1, .dv-sub, .dv-cta, .dv-stats, .dv-bg i, .dv-stage';
   const CLEAR = '.dv-nav, .dv-h1, .dv-sub, .dv-cta, .dv-stats, .dv-stage';
   function showAll() {
@@ -67,9 +64,9 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
       el.style.removeProperty('visibility');
     });
   }
-  // Parâmetro de diagnóstico/screenshot: ?intro=off libera o conteúdo na hora.
+
   if (new URLSearchParams(location.search).get('intro') === 'off') { showAll(); return; }
-  // Rede de segurança: se nada animar em 3,5s, libera o conteúdo.
+
   let safety = 0;
   let floatTween = null;
   let introDone = false;
@@ -80,7 +77,7 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
       if (floatTween) { floatTween.kill(); floatTween = null; }
       floatTween = gsap.to('.dv-stage', { y: -8, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4 });
     }
-    // Fora da hero (ou aba oculta) congela a flutuação; volta, retoma.
+
     window.addEventListener('dv-hero', (event) => {
       if (event.detail.live) { if (introDone) startFloat(); }
       else if (floatTween) { floatTween.kill(); floatTween = null; }
@@ -94,7 +91,7 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
           root.classList.remove('js-hero');
           gsap.set(CLEAR, { clearProps: 'all' });
           introDone = true;
-          // Re-apply scroll-based tilt so the hero stays slightly inclined at rest
+
           window.dispatchEvent(new Event('scroll'));
           startFloat();
         },
@@ -108,8 +105,8 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
         .fromTo('.dv-stage', { y: 64, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.25, ease: 'power4.out' }, 0.32);
       if (speed !== 1) tl.timeScale(speed);
     }
-    // Espera curta pelas fontes (cap 600ms) para a animação não correr
-    // atrás do primeiro paint em conexões lentas.
+
+
     Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 600))]).then(play);
   } catch (err) {
     clearTimeout(safety);

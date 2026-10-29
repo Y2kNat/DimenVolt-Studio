@@ -126,7 +126,7 @@ function fmt(value, digits) {
   });
 }
 
-// Número em vírgula decimal, sem zeros à direita forçados (10 → "10"; 1,5 → "1,5").
+
 function fmtNum(value, maxDigits) {
   const n = Number(value || 0);
   return n.toLocaleString("pt-BR", {
@@ -1882,7 +1882,7 @@ function buildTechnicalDocumentHtml(data) {
     .join("");
 
   const breakerInList = breakers.standard_breakers.map((b) => b.rated_current_A);
-  // 6–125 A: disjuntor DIN (MCB, IEC 60898) · 160 A em diante: caixa moldada (MCCB, IEC 60947-2)
+
   const breakerInMcb =
     breakerInList.filter((n) => n < 160).map((n) => fmtNum(n)).join(" · ") + " A";
   const breakerInMccb =

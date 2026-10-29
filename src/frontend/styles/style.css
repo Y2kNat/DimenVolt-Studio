@@ -1309,9 +1309,9 @@ body.loaded .workbench-grid { animation-delay: calc(var(--duration-stagger) * 5)
   }
 }
 
-/* Rail lateral removida no desktop: no PC a navegação fica pelo topbar.
-   A rail só existe no modo barra inferior Android (≤768px).
-   NO FIM DO ARQUIVO para ganhar da regra base .app-rail na cascata. */
+
+
+
 @media (min-width: 769px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
   .app-rail { display: none; }

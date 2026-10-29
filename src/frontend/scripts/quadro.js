@@ -107,7 +107,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  /* ---------- toast ---------- */
+
 
   var toastEl = null;
   var toastTimer = null;
@@ -140,7 +140,7 @@
     if (el) el.hidden = true;
   }
 
-  /* ---------- navigation ---------- */
+
 
   function updateProgress(step) {
     var show = step > 0;
@@ -225,7 +225,7 @@
     goToStep(state.step - 1);
   }
 
-  /* ---------- circuit helpers ---------- */
+
 
   function circuitCurrent(circuit) {
     if (num(circuit.corrente) > 0) return num(circuit.corrente);
@@ -296,7 +296,7 @@
     return { status: balanced ? "balanced" : "unbalanced", phases: phases };
   }
 
-  /* ---------- circuit form ---------- */
+
 
   function readCircuitForm() {
     return {
@@ -412,7 +412,7 @@
     toast("Circuito removido.");
   }
 
-  /* ---------- renderers ---------- */
+
 
   function renderCircuits() {
     if (!state.circuits.length) {
@@ -566,7 +566,7 @@
       "</section>";
   }
 
-  /* ---------- segmented controls ---------- */
+
 
   function setSeg(group, value) {
     var seg = document.querySelector('.qd-seg[data-group="' + group + '"]');
@@ -604,7 +604,7 @@
     document.querySelectorAll(".qd-seg").forEach(positionSegPill);
   });
 
-  /* ---------- events ---------- */
+
 
   els.circuitsRoot.addEventListener("click", function (e) {
     var btn = e.target.closest("[data-action]");
@@ -707,7 +707,7 @@
   els.btnAddCircuit.addEventListener("click", addCircuit);
   els.btnCancelEdit.addEventListener("click", cancelEdit);
 
-  /* ---------- PDF ---------- */
+
 
   function buildPdfPayload() {
     var totals = computeTotals();

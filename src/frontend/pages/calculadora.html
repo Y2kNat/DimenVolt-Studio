@@ -22,8 +22,8 @@
   <link rel="stylesheet" href="/src/frontend/styles/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* Boot: tela preta de 0,5s → aparece (só CSS, à prova de JS morto);
-       substitui a tela de loading com canvas/LOADING. */
+
+
     #boot-black {
       position: fixed;
       inset: 0;
@@ -42,9 +42,9 @@
 
   <div id="boot-black" aria-hidden="true"></div>
   <script>
-    /* Segurança: se a animação CSS não rodar (extensão/ajuste de acessibilidade,
-       cache antigo, erro em outro script), a cortina sai via JS em 1.2s;
-       e body.loaded libera o formulário caso o script principal falhe. */
+
+
+
     setTimeout(function () {
       var b = document.getElementById('boot-black');
       if (b) { b.style.display = 'none'; }
@@ -602,7 +602,7 @@
   <script src="/src/reports/pdfGenerator.js"></script>
   <script src="/src/reports/pdf-report.js"></script>
 
-  <!-- Vercel Web Analytics: servido pela plataforma em produção; local dev usa shim -->
+
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

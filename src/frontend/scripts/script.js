@@ -319,11 +319,8 @@
     clearFieldErrors();
   }
 
-  /* Boot: o overlay preto de 0,5s é controlado só por CSS (#boot-black);
-     aqui apenas carregamos a base de dados por trás da cortina.
-     IMPORTANTE: body.loaded libera o formulário no CSS
-     (body:not(.loaded) .workbench-grid = opacity 0) — nunca depender
-     de um passo acima falhar. */
+
+
   async function initApp() {
     try {
       await engine.load();

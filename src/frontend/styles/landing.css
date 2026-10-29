@@ -538,7 +538,7 @@ footer {
 
 .footer-author a:hover { color: var(--text); }
 
-/* Final CTA improvements */
+
 .final-cta {
   text-align: center;
   border-top: 1px solid var(--line);
@@ -606,9 +606,9 @@ footer {
   }
 }
 
-/* =============================================================
-   HERO v2 — port de dimenvolt-hero.html (ArcSuite-style parallax)
-   ============================================================= */
+
+
+
 :root {
   --dv-text: oklch(0.96 0.003 286);
   --dv-muted: oklch(0.7 0.01 286);
@@ -710,21 +710,21 @@ footer {
   will-change: transform;
 }
 
-/* Elipses chapadas com filter: blur deixavam as pontas visíveis no fundo
-   escuro (degrau vertical). Radial-gradient encerra em transparente por
-   construção — mesma pegada, borda sempre suave. */
+
+
+
 .dv-b1 { left: -12%; top: 10%; width: 62%; height: 20%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.09) 28%, transparent); }
 .dv-b2 { right: -18%; top: 14%; width: 72%; height: 28%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.08) 28%, transparent); }
 .dv-b3 { left: 28%; top: 36%; width: 70%; height: 18%; background: radial-gradient(ellipse farthest-side at 50% 50%, oklch(1 0 0 / 0.048) 30%, transparent); }
 
-/* Background da hero animado (só CSS): os blobs "respiram" devagar usando as
-   propriedades individuais translate/scale — assim compõem com o transform
-   inline do parallax de scroll, sem sobrescrevê-lo.
-   A animação existe desde o load, mas fica em animation-play-state: paused;
-   o IntersectionObserver (landing.js) liga body.hero-live enquanto a hero
-   está em viewport — sai da hero, a animação congela (zero GPU/CPU); volta,
-   e ela retoma exatamente da fase em que parou, sem salto.
-   Prefers-reduced-motion: tokens.css força duration 1ms → estático. */
+
+
+
+
+
+
+
+
 @keyframes dv-drift-1 { to { translate: 2.4% -18px; scale: 1.045; } }
 @keyframes dv-drift-2 { to { translate: -2.6% 14px; scale: 1.06; } }
 @keyframes dv-drift-3 { to { translate: 1.8% -12px; scale: 1.04; } }
@@ -1062,17 +1062,17 @@ body.hero-live .dv-b3 { animation-play-state: running; }
   .dv-status { display: none; }
 }
 
-/* ===== Guarda de overflow horizontal =====
-   O bleed do .dv-stage (margin -90px) ultrapassa a viewport em larguras
-   ~861–1400px. NOTA: NÃO clipar no .dv-hero — ele también é .dv-wrap
-   (coluna de 1240px) e cortaria o glow dos blobs. O guard vive no
-   html/body (overflow-x: clip/hidden em tokens.css), que clipa só na
-   scrollport, sem afetar a pintura do fundo. */
 
-/* ===== Intro GSAP =====
-   Estado inicial antes do primeiro paint: o inline-script no <body> adiciona
-   .js-hero, e o landing.js anima com GSAP e remove a classe no fim. Sem fill
-   nos seletores — se o JS/CDN falhar, o conteúdo volta ficando visível. */
+
+
+
+
+
+
+
+
+
+
 .js-hero .dv-nav,
 .js-hero .dv-h1,
 .js-hero .dv-sub,
@@ -1091,12 +1091,12 @@ body.hero-live .dv-b3 { animation-play-state: running; }
   .js-hero .dv-stage { opacity: 1 !important; }
 }
 
-/* ===== Vetor "conexão de circuito" (decorativo — só na última parte) =====
-   Traços estilo PCB no CTA final. Estático por construção: aria-hidden,
-   pointer-events none, zero animação própria.
-   Cor: a mesma das linhas translúcidas da landing (--line ~8%). Traço
-   preto puro sumiria no fundo #050505 e só "morderia" o grid — testado
-   em dev; a cor de linha é a legível em toda a área. */
+
+
+
+
+
+
 .dv-circuit {
   position: absolute;
   inset: 0;
@@ -1107,20 +1107,20 @@ body.hero-live .dv-b3 { animation-play-state: running; }
   color: rgba(244, 244, 241, 0.08);
 }
 
-/* A seção vira stacking context para confinar o traço em -1
-   (não vaza para trás das seções anteriores). */
+
+
 .final-cta {
   position: relative;
   isolation: isolate;
 }
 
 .final-circuit {
-  z-index: -1; /* sob o texto/botões da seção */
+  z-index: -1; 
 }
 
-/* Celular: sem vetor (visível apenas em PC e tablet) */
+
 @media (max-width: 560px) {
   .dv-circuit { display: none; }
 }
 
-/* Reduced motion: o vetor é estático — nada a pausar aqui. */
+
